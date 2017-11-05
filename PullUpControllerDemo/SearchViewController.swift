@@ -62,8 +62,8 @@ class SearchViewController: PullUpController {
         return searchBoxContainerView.frame.height
     }
     
-    override var pullUpControllerStickyPoints: [CGFloat] {
-        return [firstPreviewView.frame.maxY, secondPreviewView.frame.maxY]
+    override var pullUpControllerMiddleStickyPoints: [CGFloat] {
+        return [firstPreviewView.frame.maxY]
     }
     
     override var pullUpControllerIsBouncingEnabled: Bool {
@@ -80,7 +80,9 @@ class SearchViewController: PullUpController {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        pullUpControllerMoveToVisiblePoint(pullUpControllerStickyPoints[1], completion: nil)
+        if let lastStickyPoint = pullUpControllerAllStickyPoints.last {
+            pullUpControllerMoveToVisiblePoint(lastStickyPoint, completion: nil)
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -111,7 +113,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         view.endEditing(true)
-        pullUpControllerMoveToVisiblePoint(pullUpControllerStickyPoints[0], completion: nil)
+        pullUpControllerMoveToVisiblePoint(pullUpControllerMiddleStickyPoints[0], completion: nil)
         
         (parent as? MapViewController)?.zoom(to: locations[indexPath.row].location)
     }
