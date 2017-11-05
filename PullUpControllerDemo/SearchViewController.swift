@@ -32,6 +32,16 @@ class SearchViewController: PullUpController {
         super.viewDidLoad()
         
         tableView.attach(to: self)
+        setupDataSource()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        view.layer.cornerRadius = 12
+    }
+    
+    private func setupDataSource() {
         locations.append(("Rome", CLLocationCoordinate2D(latitude: 41.9004041, longitude: 12.4432921)))
         locations.append(("Milan", CLLocationCoordinate2D(latitude: 45.4625319, longitude: 9.1574741)))
         locations.append(("Turin", CLLocationCoordinate2D(latitude: 45.0705805, longitude: 7.6593106)))
@@ -40,12 +50,6 @@ class SearchViewController: PullUpController {
         locations.append(("Amsterdam", CLLocationCoordinate2D(latitude: 52.354775, longitude: 4.7585401)))
         locations.append(("Dublin", CLLocationCoordinate2D(latitude: 53.3244431, longitude: -6.3857869)))
         locations.append(("Reykjavik", CLLocationCoordinate2D(latitude: 64.1335484, longitude: -21.9224815)))
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        view.layer.cornerRadius = 12
     }
     
     // MARK: - PullUpController
@@ -69,7 +73,6 @@ class SearchViewController: PullUpController {
     override var pullUpControllerPreferredLandscapeFrame: CGRect {
         return CGRect(x: 5, y: 5, width: 280, height: UIScreen.main.bounds.height - 10)
     }
-    
 }
 
 // MARK: - UISearchBarDelegate

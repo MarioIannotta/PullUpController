@@ -29,14 +29,10 @@ class MapViewController: UIViewController {
     }
     
     func zoom(to location: CLLocationCoordinate2D) {
-        let latDelta: CLLocationDegrees = 0.05
-        let lonDelta: CLLocationDegrees = 0.05
-        let span = MKCoordinateSpanMake(latDelta, lonDelta)
-        let location = CLLocationCoordinate2DMake(location.latitude, location.longitude)
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         let region = MKCoordinateRegionMake(location, span)
         
         mapView.setRegion(region, animated: true)
     }
-
 }
 
