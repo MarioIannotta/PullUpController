@@ -1,6 +1,6 @@
 //
 //  SearchViewController.swift
-//  SliderControllerDemo
+//  PullUpControllerDemo
 //
 //  Created by Mario on 03/11/2017.
 //  Copyright © 2017 Mario. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class SearchViewController: SliderController {
+class SearchViewController: PullUpController {
     
     // MARK: - IBOutlets
     
@@ -30,7 +30,8 @@ class SearchViewController: SliderController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        sc_attach(to: tableView)
+        
+        tableView.attach(to: self)
         locations.append(("Rome", CLLocationCoordinate2D(latitude: 41.9004041, longitude: 12.4432921)))
         locations.append(("Milan", CLLocationCoordinate2D(latitude: 45.4625319, longitude: 9.1574741)))
         locations.append(("Turin", CLLocationCoordinate2D(latitude: 45.0705805, longitude: 7.6593106)))
@@ -47,25 +48,25 @@ class SearchViewController: SliderController {
         view.layer.cornerRadius = 12
     }
     
-    // MARK: - SliderController
+    // MARK: - PullUpController
     
-    override var sc_preferredSize: CGSize {
+    override var pullUpControllerPreferredSize: CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: secondPreviewView.frame.maxY)
     }
     
-    override var sc_previewOffset: CGFloat {
+    override var pullUpControllerPreviewOffset: CGFloat {
         return searchBoxContainerView.frame.height
     }
     
-    override var sc_stickyPoints: [CGFloat] {
+    override var pullUpControllerStickyPoints: [CGFloat] {
         return [firstPreviewView.frame.maxY, secondPreviewView.frame.maxY]
     }
     
-    override var sc_isBouncingEnabled: Bool {
+    override var pullUpControllerIsBouncingEnabled: Bool {
         return false
     }
     
-    override var sc_preferredLandscapeFrame: CGRect {
+    override var pullUpControllerPreferredLandscapeFrame: CGRect {
         return CGRect(x: 5, y: 5, width: 280, height: UIScreen.main.bounds.height - 10)
     }
     
@@ -76,7 +77,7 @@ class SearchViewController: SliderController {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        sc_scrollToVisiblePoint(sc_stickyPoints[1], completion: nil)
+        pullUpControllerMoveToVisiblePoint(pullUpControllerStickyPoints[1], completion: nil)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -107,7 +108,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         view.endEditing(true)
-        sc_scrollToVisiblePoint(sc_stickyPoints[0], completion: nil)
+        pullUpControllerMoveToVisiblePoint(pullUpControllerStickyPoints[0], completion: nil)
         
         (parent as? MapViewController)?.zoom(to: locations[indexPath.row].location)
     }

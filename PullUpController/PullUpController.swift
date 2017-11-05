@@ -1,6 +1,6 @@
 //
-//  SliderController.swift
-//  SliderControllerDemo
+//  PullUpController.swift
+//  PullUpControllerDemo
 //
 //  Created by Mario on 03/11/2017.
 //  Copyright © 2017 Mario. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class SliderController: UIViewController {
+open class PullUpController: UIViewController {
     
     private var leftConstraint: NSLayoutConstraint?
     private var topConstraint: NSLayoutConstraint?
@@ -16,23 +16,29 @@ open class SliderController: UIViewController {
     private var heightConstraint: NSLayoutConstraint?
     private var panGestureRecognizer: UIPanGestureRecognizer?
     
-    open var sc_previewOffset: CGFloat {
+    open var pullUpControllerPreviewOffset: CGFloat {
         return 50
     }
-    open var sc_preferredSize: CGSize {
+    open var pullUpControllerPreferredSize: CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: 400)
     }
-    open var sc_stickyPoints: [CGFloat] {
+    open var pullUpControllerStickyPoints: [CGFloat] {
         return []
     }
-    open var sc_isBouncingEnabled: Bool {
+    open var pullUpControllerIsBouncingEnabled: Bool {
         return false
     }
-    open var sc_preferredLandscapeFrame: CGRect {
+    open var pullUpControllerPreferredLandscapeFrame: CGRect {
         return CGRect(x: 10, y: 10, width: 300, height: UIScreen.main.bounds.height - 20)
     }
     
-    open func sc_scrollToVisiblePoint(_ visiblePoint: CGFloat, completion: (() -> Void)?) {
+    private var pullUpControllerAllStickyPoints: [CGFloat] {
+        var sc_allStickyPoints = [pullUpControllerPreviewOffset]
+        sc_allStickyPoints.append(contentsOf: pullUpControllerStickyPoints)
+        return sc_allStickyPoints.sorted()
+    }
+    
+    open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, completion: (() -> Void)?) {
         guard
             UIScreen.main.bounds.height > UIScreen.main.bounds.width // disable the scroll in landscape
             else { return }
@@ -49,14 +55,11 @@ open class SliderController: UIViewController {
         )
     }
     
-    open func sc_attach(to scrollView: UIScrollView) {
-        scrollView.panGestureRecognizer.addTarget(self, action: #selector(handleInternalScrollViewPanGestureRecognizer(_:)))
-    }
-    
-    private var sc_allStickyPoints: [CGFloat] {
-        var sc_allStickyPoints = [sc_previewOffset]
-        sc_allStickyPoints.append(contentsOf: sc_stickyPoints)
-        return sc_allStickyPoints.sorted()
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { [weak self] coordinator in
+            self?.refreshConstraints(size: size)
+        })
+        // TODO: restore old portrait constraint when the device is again in portrait
     }
     
     fileprivate func setupPanGestureRecognizer() {
@@ -73,15 +76,15 @@ open class SliderController: UIViewController {
         
         topConstraint = view.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 0)
         leftConstraint = view.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 0)
-        widthConstraint = view.widthAnchor.constraint(equalToConstant: sc_preferredSize.width)
-        heightConstraint = view.heightAnchor.constraint(equalToConstant: sc_preferredSize.height)
+        widthConstraint = view.widthAnchor.constraint(equalToConstant: pullUpControllerPreferredSize.width)
+        heightConstraint = view.heightAnchor.constraint(equalToConstant: pullUpControllerPreferredSize.height)
         
         NSLayoutConstraint.activate([topConstraint, leftConstraint, widthConstraint, heightConstraint].flatMap { $0 })
     }
     
     private var currentStickyPointIndex: Int {
         let stickyPointTreshold = (self.parent?.view.frame.height ?? 0) - (topConstraint?.constant ?? 0)
-        let stickyPointsLessCurrentPosition = sc_allStickyPoints.map { abs($0 - stickyPointTreshold) }
+        let stickyPointsLessCurrentPosition = pullUpControllerAllStickyPoints.map { abs($0 - stickyPointTreshold) }
         guard let minStickyPointDifference = stickyPointsLessCurrentPosition.min() else { return 0 }
         return stickyPointsLessCurrentPosition.index(of: minStickyPointDifference) ?? 0
     }
@@ -92,11 +95,11 @@ open class SliderController: UIViewController {
             if yVelocity > 0 {
                 currentStickyPointIndex = max(currentStickyPointIndex - 1, 0)
             } else {
-                currentStickyPointIndex = min(currentStickyPointIndex + 1, sc_allStickyPoints.count - 1)
+                currentStickyPointIndex = min(currentStickyPointIndex + 1, pullUpControllerAllStickyPoints.count - 1)
             }
         }
         
-        return (parent?.view.frame.height ?? 0) - sc_allStickyPoints[currentStickyPointIndex]
+        return (parent?.view.frame.height ?? 0) - pullUpControllerAllStickyPoints[currentStickyPointIndex]
     }
     
     @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -111,9 +114,9 @@ open class SliderController: UIViewController {
         
         topConstraint.constant += yTranslation
         
-        if !sc_isBouncingEnabled {
-            topConstraint.constant = max(topConstraint.constant, parentViewHeight - sc_preferredSize.height)
-            topConstraint.constant = min(topConstraint.constant, parentViewHeight - sc_previewOffset)
+        if !pullUpControllerIsBouncingEnabled {
+            topConstraint.constant = max(topConstraint.constant, parentViewHeight - pullUpControllerPreferredSize.height)
+            topConstraint.constant = min(topConstraint.constant, parentViewHeight - pullUpControllerPreviewOffset)
         }
         
         if gestureRecognizer.state == .ended {
@@ -127,11 +130,11 @@ open class SliderController: UIViewController {
         }
     }
     
-    @objc private func handleInternalScrollViewPanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc fileprivate func handleInternalScrollViewPanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
         guard
             UIScreen.main.bounds.height > UIScreen.main.bounds.width, // disable the gesture in landscape
             let scrollView = gestureRecognizer.view as? UIScrollView,
-            let lastStickyPoint = sc_allStickyPoints.last,
+            let lastStickyPoint = pullUpControllerAllStickyPoints.last,
             let parentViewHeight = parent?.view.frame.height,
             let topConstraintValue = topConstraint?.constant
             else { return }
@@ -154,25 +157,18 @@ open class SliderController: UIViewController {
         }
     }
     
-    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animate(alongsideTransition: { [weak self] coordinator in
-            self?.refreshConstraints(size: size)
-        })
-        // TODO: restore old portrait constraint when the device is again in portrait
-    }
-    
     private func setPortraitConstraints(parentViewSize: CGSize) {
-        topConstraint?.constant = parentViewSize.height - sc_previewOffset
-        leftConstraint?.constant = (parentViewSize.width - min(sc_preferredSize.width, parentViewSize.width))/2
-        widthConstraint?.constant = sc_preferredSize.width
-        heightConstraint?.constant = sc_preferredSize.height
+        topConstraint?.constant = parentViewSize.height - pullUpControllerPreviewOffset
+        leftConstraint?.constant = (parentViewSize.width - min(pullUpControllerPreferredSize.width, parentViewSize.width))/2
+        widthConstraint?.constant = pullUpControllerPreferredSize.width
+        heightConstraint?.constant = pullUpControllerPreferredSize.height
     }
     
     private func setLandscapeConstraints() {
-        topConstraint?.constant = sc_preferredLandscapeFrame.origin.y
-        leftConstraint?.constant = sc_preferredLandscapeFrame.origin.x
-        widthConstraint?.constant = sc_preferredLandscapeFrame.width
-        heightConstraint?.constant = sc_preferredLandscapeFrame.height
+        topConstraint?.constant = pullUpControllerPreferredLandscapeFrame.origin.y
+        leftConstraint?.constant = pullUpControllerPreferredLandscapeFrame.origin.x
+        widthConstraint?.constant = pullUpControllerPreferredLandscapeFrame.width
+        heightConstraint?.constant = pullUpControllerPreferredLandscapeFrame.height
     }
     
     fileprivate func refreshConstraints(size: CGSize) {
@@ -186,14 +182,21 @@ open class SliderController: UIViewController {
 
 extension UIViewController {
     
-    open func addSliderController(_ sliderController: SliderController) {
-        addChildViewController(sliderController)
+    open func addPullUpController(_ pullUpController: PullUpController) {
+        addChildViewController(pullUpController)
         
-        sliderController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(sliderController.view)
+        pullUpController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(pullUpController.view)
         
-        sliderController.setupPanGestureRecognizer()
-        sliderController.setupConstrains()
-        sliderController.refreshConstraints(size: view.frame.size)
+        pullUpController.setupPanGestureRecognizer()
+        pullUpController.setupConstrains()
+        pullUpController.refreshConstraints(size: view.frame.size)
+    }
+}
+
+extension UIScrollView {
+    
+    open func attach(to pullUpController: PullUpController) {
+        panGestureRecognizer.addTarget(pullUpController, action: #selector(pullUpController.handleInternalScrollViewPanGestureRecognizer(_:)))
     }
 }

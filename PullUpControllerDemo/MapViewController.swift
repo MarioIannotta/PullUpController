@@ -1,6 +1,6 @@
 //
 //  MapViewController.swift
-//  SliderControllerDemo
+//  PullUpControllerDemo
 //
 //  Created by Mario on 03/11/2017.
 //  Copyright © 2017 Mario. All rights reserved.
@@ -16,16 +16,16 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addSliderController()
+        addPullUpController()
     }
     
-    private func addSliderController() {
+    private func addPullUpController() {
         guard
-            let sliderController = UIStoryboard(name: "Main", bundle: nil)
+            let pullUpController = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewController(withIdentifier: "SearchViewController") as? SearchViewController
             else { return }
         
-        addSliderController(sliderController)
+        addPullUpController(pullUpController)
     }
     
     func zoom(to location: CLLocationCoordinate2D) {

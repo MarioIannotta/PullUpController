@@ -1,6 +1,6 @@
 //
 //  SearchResultCell.swift
-//  SliderControllerDemo
+//  PullUpControllerDemo
 //
 //  Created by Mario on 04/11/2017.
 //  Copyright © 2017 Mario. All rights reserved.

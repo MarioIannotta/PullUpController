@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  SliderControllerDemo
+//  PullUpControllerDemo
 //
 //  Created by Mario on 03/11/2017.
 //  Copyright © 2017 Mario. All rights reserved.

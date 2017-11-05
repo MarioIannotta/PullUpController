@@ -12,20 +12,20 @@
 		AC1A74CD1FACEEAE00392CB8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC1A74CB1FACEEAE00392CB8 /* Main.storyboard */; };
 		AC1A74CF1FACEEAE00392CB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC1A74CE1FACEEAE00392CB8 /* Assets.xcassets */; };
 		AC1A74D21FACEEAE00392CB8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC1A74D01FACEEAE00392CB8 /* LaunchScreen.storyboard */; };
-		AC1A74DB1FACEED700392CB8 /* SliderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1A74DA1FACEED700392CB8 /* SliderController.swift */; };
+		AC1A74DB1FACEED700392CB8 /* PullUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1A74DA1FACEED700392CB8 /* PullUpController.swift */; };
 		AC1A74DD1FACF09000392CB8 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1A74DC1FACF09000392CB8 /* SearchViewController.swift */; };
 		ACE403581FADF1C500898D01 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE403571FADF1C500898D01 /* SearchResultCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AC1A74C41FACEEAD00392CB8 /* SliderControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SliderControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC1A74C41FACEEAD00392CB8 /* PullUpControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PullUpControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC1A74C71FACEEAE00392CB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AC1A74C91FACEEAE00392CB8 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		AC1A74CC1FACEEAE00392CB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AC1A74CE1FACEEAE00392CB8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC1A74D11FACEEAE00392CB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC1A74D31FACEEAE00392CB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AC1A74DA1FACEED700392CB8 /* SliderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderController.swift; sourceTree = "<group>"; };
+		AC1A74DA1FACEED700392CB8 /* PullUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullUpController.swift; sourceTree = "<group>"; };
 		AC1A74DC1FACF09000392CB8 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		ACE403571FADF1C500898D01 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -44,8 +44,8 @@
 		AC1A74BB1FACEEAD00392CB8 = {
 			isa = PBXGroup;
 			children = (
-				AC1A74D91FACEECD00392CB8 /* SliderController */,
-				AC1A74C61FACEEAD00392CB8 /* SliderControllerDemo */,
+				AC1A74D91FACEECD00392CB8 /* PullUpController */,
+				AC1A74C61FACEEAD00392CB8 /* PullUpControllerDemo */,
 				AC1A74C51FACEEAD00392CB8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,12 +53,12 @@
 		AC1A74C51FACEEAD00392CB8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AC1A74C41FACEEAD00392CB8 /* SliderControllerDemo.app */,
+				AC1A74C41FACEEAD00392CB8 /* PullUpControllerDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AC1A74C61FACEEAD00392CB8 /* SliderControllerDemo */ = {
+		AC1A74C61FACEEAD00392CB8 /* PullUpControllerDemo */ = {
 			isa = PBXGroup;
 			children = (
 				AC1A74D31FACEEAE00392CB8 /* Info.plist */,
@@ -70,23 +70,23 @@
 				AC1A74D01FACEEAE00392CB8 /* LaunchScreen.storyboard */,
 				AC1A74CB1FACEEAE00392CB8 /* Main.storyboard */,
 			);
-			path = SliderControllerDemo;
+			path = PullUpControllerDemo;
 			sourceTree = "<group>";
 		};
-		AC1A74D91FACEECD00392CB8 /* SliderController */ = {
+		AC1A74D91FACEECD00392CB8 /* PullUpController */ = {
 			isa = PBXGroup;
 			children = (
-				AC1A74DA1FACEED700392CB8 /* SliderController.swift */,
+				AC1A74DA1FACEED700392CB8 /* PullUpController.swift */,
 			);
-			path = SliderController;
+			path = PullUpController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AC1A74C31FACEEAD00392CB8 /* SliderControllerDemo */ = {
+		AC1A74C31FACEEAD00392CB8 /* PullUpControllerDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AC1A74D61FACEEAE00392CB8 /* Build configuration list for PBXNativeTarget "SliderControllerDemo" */;
+			buildConfigurationList = AC1A74D61FACEEAE00392CB8 /* Build configuration list for PBXNativeTarget "PullUpControllerDemo" */;
 			buildPhases = (
 				AC1A74C01FACEEAD00392CB8 /* Sources */,
 				AC1A74C11FACEEAD00392CB8 /* Frameworks */,
@@ -96,9 +96,9 @@
 			);
 			dependencies = (
 			);
-			name = SliderControllerDemo;
+			name = PullUpControllerDemo;
 			productName = SliderControllerDemo;
-			productReference = AC1A74C41FACEEAD00392CB8 /* SliderControllerDemo.app */;
+			productReference = AC1A74C41FACEEAD00392CB8 /* PullUpControllerDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -117,7 +117,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AC1A74BF1FACEEAD00392CB8 /* Build configuration list for PBXProject "SliderControllerDemo" */;
+			buildConfigurationList = AC1A74BF1FACEEAD00392CB8 /* Build configuration list for PBXProject "PullUpControllerDemo" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -130,7 +130,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AC1A74C31FACEEAD00392CB8 /* SliderControllerDemo */,
+				AC1A74C31FACEEAD00392CB8 /* PullUpControllerDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -154,7 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC1A74CA1FACEEAE00392CB8 /* MapViewController.swift in Sources */,
-				AC1A74DB1FACEED700392CB8 /* SliderController.swift in Sources */,
+				AC1A74DB1FACEED700392CB8 /* PullUpController.swift in Sources */,
 				AC1A74DD1FACF09000392CB8 /* SearchViewController.swift in Sources */,
 				AC1A74C81FACEEAE00392CB8 /* AppDelegate.swift in Sources */,
 				ACE403581FADF1C500898D01 /* SearchResultCell.swift in Sources */,
@@ -295,9 +295,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = SliderControllerDemo/Info.plist;
+				INFOPLIST_FILE = PullUpControllerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.marioiannotta.SliderControllerDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marioiannotta.PullUpControllerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -309,9 +309,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = SliderControllerDemo/Info.plist;
+				INFOPLIST_FILE = PullUpControllerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.marioiannotta.SliderControllerDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marioiannotta.PullUpControllerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -321,7 +321,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AC1A74BF1FACEEAD00392CB8 /* Build configuration list for PBXProject "SliderControllerDemo" */ = {
+		AC1A74BF1FACEEAD00392CB8 /* Build configuration list for PBXProject "PullUpControllerDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AC1A74D41FACEEAE00392CB8 /* Debug */,
@@ -330,7 +330,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AC1A74D61FACEEAE00392CB8 /* Build configuration list for PBXNativeTarget "SliderControllerDemo" */ = {
+		AC1A74D61FACEEAE00392CB8 /* Build configuration list for PBXNativeTarget "PullUpControllerDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AC1A74D71FACEEAE00392CB8 /* Debug */,
