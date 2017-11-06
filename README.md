@@ -8,6 +8,11 @@ Create your own pull up controller with multiple sticky points like in iOS Maps
 
 <img src="demo.gif" height="500"/>
 
+# Features
+- Multiple *sticky* points
+- Landscape support
+- Scroll views friendly
+
 # Setup
 1. Add ```pod 'PullUpController'``` to your Podfile or copy "PullUpController.swift" into your project
 2. Make sure the view controller that will be your pull up controller must inherit from ```PullUpController```
@@ -45,7 +50,7 @@ You can customize the controller behavior by overriding the followings propertie
 >The desired size of the pull up controller’s view, in screen units when the device is in landscape mode.
 >The default value is ```(x: 10, y: 10, width: 300, height: UIScreen.main.bounds.height - 20)```.
 
-It's all possible to manually change the view controller's view position by using the method
+It's possible to change the view controller's view position by using the method
 ```pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, completion: (() -> Void)?)```
 
 >This method will move the pull up controller's view in order to show the provided visible point.
@@ -53,6 +58,11 @@ It's all possible to manually change the view controller's view position by usin
 >You may use on of `pullUpControllerAllStickyPoints` item to provide a valid visible point.
 >- `visiblePoint`: the y value to make visible, in screen units expressed in the pull up controller coordinate system.
 >- `completion`: The closure to execute after the animation is completed. This block has no return value and takes no parameters. You may specify nil for this parameter.
+
+PullUpController is easy draggable even if your `PullUpController`'s view contains a `UIScrollView`, just attach it to the controller itself with the following method:
+```<#T##UIScrollView#>.attach(to: <#T##PullUpController#>)```
+>Attach the scroll view to the provided pull up controller in order to move it with the scroll view content.
+>- `pullUpController`: the pull up controller to move with the current scroll view content.
 
 # Demo
 In this repository you can also find a demo.
