@@ -75,6 +75,8 @@ open class PullUpController: UIViewController {
         return UIScreen.main.bounds.height > UIScreen.main.bounds.width
     }
     
+    private var portraitPreviousStickyPointIndex: Int?
+    
     /**
      This method will move the pull up controller's view in order to show the provided visible point.
      
@@ -98,10 +100,25 @@ open class PullUpController: UIViewController {
     }
     
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        let isPortrait = size.height > size.width
+        var targetStickyPoint: CGFloat?
+        
+        if !isPortrait {
+            portraitPreviousStickyPointIndex = currentStickyPointIndex
+        } else if
+            let portraitPreviousStickyPointIndex = portraitPreviousStickyPointIndex,
+            portraitPreviousStickyPointIndex < pullUpControllerAllStickyPoints.count
+        {
+            targetStickyPoint = pullUpControllerAllStickyPoints[portraitPreviousStickyPointIndex]
+            self.portraitPreviousStickyPointIndex = nil
+        }
+        
         coordinator.animate(alongsideTransition: { [weak self] coordinator in
             self?.refreshConstraints(size: size)
+            if let targetStickyPoint = targetStickyPoint {
+                self?.pullUpControllerMoveToVisiblePoint(targetStickyPoint, completion: nil)
+            }
         })
-        // TODO: restore old portrait constraint when the device is again in portrait
     }
     
     fileprivate func setupPanGestureRecognizer() {
