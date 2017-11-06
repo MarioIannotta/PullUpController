@@ -15,7 +15,7 @@ Create your own pull up controller with multiple sticky points like in iOS Maps
 
 # Setup
 1. Add ```pod 'PullUpController'``` to your Podfile or copy "PullUpController.swift" into your project
-2. Make sure the view controller that will be your pull up controller must inherit from ```PullUpController```
+2. Make sure the view controller that will be your pull up controller inherits from ```PullUpController```
 3. Add the controller as child of your main controller using ```addPullUpController(<#T##pullUpController: PullUpController##PullUpController#>)```
  
 # Customization
