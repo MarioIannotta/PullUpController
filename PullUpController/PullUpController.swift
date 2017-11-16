@@ -78,6 +78,13 @@ open class PullUpController: UIViewController {
     private var portraitPreviousStickyPointIndex: Int?
     
     /**
+     Current top offset
+     */
+    public var currentTopOffset: CGFloat? {
+        return (parent?.view.frame.height ?? 0) - (topConstraint?.constant ?? 0)
+    }
+    
+    /**
      This method will move the pull up controller's view in order to show the provided visible point.
      
      You may use on of `pullUpControllerAllStickyPoints` item to provide a valid visible point.
