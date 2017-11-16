@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol pullUpControllerDelegate {
+public protocol PullUpControllerDelegate {
     
     /**
      Call when any offset changes
@@ -16,7 +16,7 @@ public protocol pullUpControllerDelegate {
     func pullUpControllerDidScroll(_ pullUpController: PullUpController)
 }
 
-extension pullUpControllerDelegate {
+public extension PullUpControllerDelegate {
     
     func pullUpControllerDidScroll(_ pullUpController: PullUpController) {
         //optional
@@ -31,7 +31,7 @@ open class PullUpController: UIViewController {
     private var heightConstraint: NSLayoutConstraint?
     private var panGestureRecognizer: UIPanGestureRecognizer?
     
-    public var pullUpControllerDelegate: pullUpControllerDelegate? = nil
+    public var pullUpControllerDelegate: PullUpControllerDelegate? = nil
     
     /**
      The desired height in screen units expressed in the pull up controller coordinate system that will be initially showed.
@@ -120,7 +120,7 @@ open class PullUpController: UIViewController {
             },
             completion: { _ in
                 completion?()
-            }
+        }
         )
     }
     
