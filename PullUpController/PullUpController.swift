@@ -8,6 +8,21 @@
 
 import UIKit
 
+public protocol pullUpControllerDelegate {
+    
+    /**
+     Call when any offset changes
+     */
+    func pullUpControllerDidScroll(_ pullUpController: PullUpController)
+}
+
+extension pullUpControllerDelegate {
+    
+    func pullUpControllerDidScroll(_ pullUpController: PullUpController) {
+        //optional
+    }
+}
+
 open class PullUpController: UIViewController {
     
     private var leftConstraint: NSLayoutConstraint?
@@ -15,6 +30,8 @@ open class PullUpController: UIViewController {
     private var widthConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
     private var panGestureRecognizer: UIPanGestureRecognizer?
+    
+    public var pullUpControllerDelegate: pullUpControllerDelegate? = nil
     
     /**
      The desired height in screen units expressed in the pull up controller coordinate system that will be initially showed.
@@ -94,6 +111,7 @@ open class PullUpController: UIViewController {
     open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, completion: (() -> Void)?) {
         guard isPortrait else { return }
         topConstraint?.constant = (parent?.view.frame.height ?? 0) - visiblePoint
+        pullUpControllerOffsetIsChanging()
         
         UIView.animate(
             withDuration: 0.3,
@@ -194,6 +212,7 @@ open class PullUpController: UIViewController {
                 }
             )
         }
+        pullUpControllerOffsetIsChanging()
     }
     
     @objc fileprivate func handleInternalScrollViewPanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -222,6 +241,7 @@ open class PullUpController: UIViewController {
                 }
             )
         }
+        pullUpControllerOffsetIsChanging()
     }
     
     private func setPortraitConstraints(parentViewSize: CGSize) {
@@ -244,6 +264,11 @@ open class PullUpController: UIViewController {
         } else {
             setPortraitConstraints(parentViewSize: size)
         }
+        pullUpControllerOffsetIsChanging()
+    }
+    
+    open func pullUpControllerOffsetIsChanging() {
+        pullUpControllerDelegate?.pullUpControllerDidScroll(self)
     }
 }
 
