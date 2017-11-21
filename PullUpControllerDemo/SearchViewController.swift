@@ -33,8 +33,16 @@ class SearchViewController: PullUpController {
         
         tableView.attach(to: self)
         setupDataSource()
+        
+        self.willMoveToStickyPoint = { point in
+            print("willMoveToStickyPoint \(point)")
+        }
+
+        self.didMoveToStickyPoint = { point in
+            print("didMoveToStickyPoint \(point)")
+        }
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
