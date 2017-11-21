@@ -8,8 +8,6 @@
 
 import UIKit
 
-public typealias PullUpControllerMoveToPoint = ((_ point: CGFloat) -> Void)
-
 open class PullUpController: UIViewController {
     
     private var leftConstraint: NSLayoutConstraint?
@@ -17,13 +15,19 @@ open class PullUpController: UIViewController {
     private var widthConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
     private var panGestureRecognizer: UIPanGestureRecognizer?
-
+    
     /**
-     Notifications to be called when controller will/did move to one of sticky points
+     The closure to execute before the view controller's view move to a sticky point.
+     The target sticky point, expressed in the pull up controller coordinate system, is provided in the closure parameter.
      */
-    open var willMoveToStickyPoint: PullUpControllerMoveToPoint?
-    open var didMoveToStickyPoint: PullUpControllerMoveToPoint?
-
+    open var willMoveToStickyPoint: ((_ point: CGFloat) -> Void)?
+    
+    /**
+     The closure to execute after the view controller's view move to a sticky point.
+     The sticky point, expressed in the pull up controller coordinate system, is provided in the closure parameter.
+     */
+    open var didMoveToStickyPoint: ((_ point: CGFloat) -> Void)?
+    
     /**
      The desired height in screen units expressed in the pull up controller coordinate system that will be initially showed.
      The default value is 50.
@@ -103,10 +107,10 @@ open class PullUpController: UIViewController {
             },
             completion: { _ in
                 completion?()
-            }
+        }
         )
     }
-
+    
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         let isPortrait = size.height > size.width
         var targetStickyPoint: CGFloat?
@@ -227,7 +231,7 @@ open class PullUpController: UIViewController {
             }
         )
     }
-
+    
     private func setPortraitConstraints(parentViewSize: CGSize) {
         topConstraint?.constant = parentViewSize.height - pullUpControllerPreviewOffset
         leftConstraint?.constant = (parentViewSize.width - min(pullUpControllerPreferredSize.width, parentViewSize.width))/2
