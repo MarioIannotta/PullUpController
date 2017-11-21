@@ -8,6 +8,21 @@
 
 import UIKit
 
+public protocol PullUpControllerDelegate {
+    
+    /**
+     Call when any offset changes
+     */
+    func pullUpControllerDidScroll(_ pullUpController: PullUpController)
+}
+
+public extension PullUpControllerDelegate {
+    
+    func pullUpControllerDidScroll(_ pullUpController: PullUpController) {
+        //optional
+    }
+}
+
 open class PullUpController: UIViewController {
     
     private var leftConstraint: NSLayoutConstraint?
@@ -15,6 +30,8 @@ open class PullUpController: UIViewController {
     private var widthConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
     private var panGestureRecognizer: UIPanGestureRecognizer?
+    
+    public var pullUpControllerDelegate: PullUpControllerDelegate? = nil
     
     /**
      The desired height in screen units expressed in the pull up controller coordinate system that will be initially showed.
@@ -78,6 +95,13 @@ open class PullUpController: UIViewController {
     private var portraitPreviousStickyPointIndex: Int?
     
     /**
+     Current top offset
+     */
+    public var currentTopOffset: CGFloat? {
+        return (parent?.view.frame.height ?? 0) - (topConstraint?.constant ?? 0)
+    }
+    
+    /**
      This method will move the pull up controller's view in order to show the provided visible point.
      
      You may use on of `pullUpControllerAllStickyPoints` item to provide a valid visible point.
@@ -87,6 +111,7 @@ open class PullUpController: UIViewController {
     open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, completion: (() -> Void)?) {
         guard isPortrait else { return }
         topConstraint?.constant = (parent?.view.frame.height ?? 0) - visiblePoint
+        pullUpControllerOffsetIsChanging()
         
         UIView.animate(
             withDuration: 0.3,
@@ -95,7 +120,7 @@ open class PullUpController: UIViewController {
             },
             completion: { _ in
                 completion?()
-            }
+        }
         )
     }
     
@@ -187,6 +212,7 @@ open class PullUpController: UIViewController {
                 }
             )
         }
+        pullUpControllerOffsetIsChanging()
     }
     
     @objc fileprivate func handleInternalScrollViewPanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -215,6 +241,7 @@ open class PullUpController: UIViewController {
                 }
             )
         }
+        pullUpControllerOffsetIsChanging()
     }
     
     private func setPortraitConstraints(parentViewSize: CGSize) {
@@ -237,6 +264,11 @@ open class PullUpController: UIViewController {
         } else {
             setPortraitConstraints(parentViewSize: size)
         }
+        pullUpControllerOffsetIsChanging()
+    }
+    
+    open func pullUpControllerOffsetIsChanging() {
+        pullUpControllerDelegate?.pullUpControllerDidScroll(self)
     }
 }
 
