@@ -8,6 +8,8 @@
 
 import UIKit
 
+public typealias PullUpControllerMoveToPoint = ((_ point: CGFloat) -> Void)
+
 open class PullUpController: UIViewController {
     
     private var leftConstraint: NSLayoutConstraint?
@@ -15,7 +17,13 @@ open class PullUpController: UIViewController {
     private var widthConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
     private var panGestureRecognizer: UIPanGestureRecognizer?
-    
+
+    /**
+     Notifications to be called when controller will/did move to one of sticky points
+     */
+    open var willMoveToStickyPoint: PullUpControllerMoveToPoint?
+    open var didMoveToStickyPoint: PullUpControllerMoveToPoint?
+
     /**
      The desired height in screen units expressed in the pull up controller coordinate system that will be initially showed.
      The default value is 50.
@@ -98,7 +106,7 @@ open class PullUpController: UIViewController {
             }
         )
     }
-    
+
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         let isPortrait = size.height > size.width
         var targetStickyPoint: CGFloat?
@@ -158,6 +166,7 @@ open class PullUpController: UIViewController {
             }
         }
         
+        willMoveToStickyPoint?(pullUpControllerAllStickyPoints[currentStickyPointIndex])
         return (parent?.view.frame.height ?? 0) - pullUpControllerAllStickyPoints[currentStickyPointIndex]
     }
     
@@ -180,12 +189,7 @@ open class PullUpController: UIViewController {
         
         if gestureRecognizer.state == .ended {
             topConstraint.constant = nearestStickyPointY(yVelocity: gestureRecognizer.velocity(in: view).y)
-            UIView.animate(
-                withDuration: 0.3,
-                animations: { [weak self] in
-                    self?.parent?.view.layoutIfNeeded()
-                }
-            )
+            animateLayout()
         }
     }
     
@@ -208,15 +212,22 @@ open class PullUpController: UIViewController {
         
         if gestureRecognizer.state.rawValue == 3 { // for some reason gestureRecognizer.state == .ended doesn't work
             topConstraint?.constant = nearestStickyPointY(yVelocity: 0)
-            UIView.animate(
-                withDuration: 0.3,
-                animations: { [weak self] in
-                    self?.parent?.view.layoutIfNeeded()
-                }
-            )
+            animateLayout()
         }
     }
     
+    private func animateLayout() {
+        UIView.animate(
+            withDuration: 0.3,
+            animations: { [weak self] in
+                self?.parent?.view.layoutIfNeeded()
+                
+                let point = (self?.parent?.view.frame.height ?? 0.0) - (self?.topConstraint?.constant ?? 0.0)
+                self?.didMoveToStickyPoint?(point)
+            }
+        )
+    }
+
     private func setPortraitConstraints(parentViewSize: CGSize) {
         topConstraint?.constant = parentViewSize.height - pullUpControllerPreviewOffset
         leftConstraint?.constant = (parentViewSize.width - min(pullUpControllerPreferredSize.width, parentViewSize.width))/2
