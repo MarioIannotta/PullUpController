@@ -206,7 +206,11 @@ open class PullUpController: UIViewController {
             let topConstraintValue = topConstraint?.constant
             else { return }
         
-        let isScrollingDown = gestureRecognizer.translation(in: view).y > 0
+        /**
+         when gestureRecognizer.state == .ended, the translationY == 0, cause isScrollingDown = false,
+         so in handlePanGestureRecognizer, gestureRecognizer.state == .ended will not work
+         */
+        let isScrollingDown = gestureRecognizer.translation(in: view).y >= 0
         let shouldScrollingDownTriggerGestureRecognizer = isScrollingDown && scrollView.contentOffset.y <= 0
         let shouldScrollingUpTriggerGestureRecognizer = !isScrollingDown && topConstraintValue != parentViewHeight - lastStickyPoint
         
@@ -214,10 +218,10 @@ open class PullUpController: UIViewController {
             handlePanGestureRecognizer(gestureRecognizer)
         }
         
-        if gestureRecognizer.state.rawValue == 3 { // for some reason gestureRecognizer.state == .ended doesn't work
-            topConstraint?.constant = nearestStickyPointY(yVelocity: 0)
-            animateLayout()
-        }
+//        if gestureRecognizer.state.rawValue == 3 { // for some reason gestureRecognizer.state == .ended doesn't work
+//            topConstraint?.constant = nearestStickyPointY(yVelocity: 0)
+//            animateLayout()
+//        }
     }
     
     private func animateLayout() {
