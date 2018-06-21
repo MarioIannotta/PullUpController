@@ -6,7 +6,7 @@ Create your own pull up controller with multiple sticky points like in iOS Maps
 [![Swift 4](https://img.shields.io/badge/Swift-4-orange.svg?style=flat)](https://developer.apple.com/swift/) 
 [![Cocoapods Compatible](https://img.shields.io/cocoapods/v/PullUpController.svg)](https://img.shields.io/cocoapods/v/PullUpController.svg)
 
-<img src="demo.gif" height="500"/>
+<img src="https://raw.githubusercontent.com/MarioIannotta/PullUpController/master/demo.gif" height="500"/>
 
 # Features
 - Multiple *sticky* points
