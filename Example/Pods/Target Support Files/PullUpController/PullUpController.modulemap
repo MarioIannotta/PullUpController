@@ -1,0 +1,6 @@
+framework module PullUpController {
+  umbrella header "PullUpController-umbrella.h"
+
+  export *
+  module * { export * }
+}

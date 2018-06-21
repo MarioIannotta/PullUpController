@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/mario/Desktop/PullUpController/PullUpControllerDemo.xcodeproj">
+      location = "self:PullUpController.xcodeproj">
    </FileRef>
 </Workspace>

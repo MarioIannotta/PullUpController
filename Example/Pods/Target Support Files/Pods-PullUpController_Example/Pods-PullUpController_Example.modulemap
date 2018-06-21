@@ -1,0 +1,6 @@
+framework module Pods_PullUpController_Example {
+  umbrella header "Pods-PullUpController_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

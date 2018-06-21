@@ -1,0 +1,5 @@
+use_frameworks!
+
+target 'PullUpController_Example' do
+  pod 'PullUpController', :path => '../'
+end

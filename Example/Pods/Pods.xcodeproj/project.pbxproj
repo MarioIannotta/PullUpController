@@ -1,0 +1,584 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2955C19063DF47E923334A533D99F273 /* Pods-PullUpController_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 13054176DE8FD7682EA5876D0559D994 /* Pods-PullUpController_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8031195AB9B2F6F1140776E5BDA4A34C /* PullUpController-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 23CC8DB9AF358116FE5F077A38A91D66 /* PullUpController-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E010BBE3A0DCA0581AEA0F8AE4F58BFC /* Pods-PullUpController_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BB536EBEECAC21C47D62C1DF0D798356 /* Pods-PullUpController_Example-dummy.m */; };
+		E371467500760254B3FDE804F871C01F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		F12BA5B5DD5E409088A60EE72BAD20DD /* PullUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE02B10DCAF71B4C8DA0F59BB3F4D4 /* PullUpController.swift */; };
+		F698D35311AF7A82832B9961D8567285 /* PullUpController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B8751D4FDEC7CA05976A501C20CE94 /* PullUpController-dummy.m */; };
+		FB3DAB06F8E1C5D93F78EDD7AB44A67E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F8C04CCB6BD040FDB99775BF786172D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 88A21A82856B75E85E451F68BE9B66F7;
+			remoteInfo = PullUpController;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1018868A7D2730AD2239974DEC2BB3EC /* Pods-PullUpController_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PullUpController_Example-frameworks.sh"; sourceTree = "<group>"; };
+		13054176DE8FD7682EA5876D0559D994 /* Pods-PullUpController_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-PullUpController_Example-umbrella.h"; sourceTree = "<group>"; };
+		21F144D6F2B3882BC5FD9933E31927EA /* Pods-PullUpController_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PullUpController_Example.release.xcconfig"; sourceTree = "<group>"; };
+		23CC8DB9AF358116FE5F077A38A91D66 /* PullUpController-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PullUpController-umbrella.h"; sourceTree = "<group>"; };
+		2C5AA6A33D63B64686BB7A5B6B78E35B /* PullUpController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PullUpController.framework; path = PullUpController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C31DAEE49BC012D13D12539B321D0A3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		40664F6BBDF3B9CD293C19FB51C67E34 /* Pods-PullUpController_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PullUpController_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		483D1843AE28A17CB5FD474CEE4AF6BB /* PullUpController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PullUpController-prefix.pch"; sourceTree = "<group>"; };
+		50E3AF474793B9EE7DE53500151B8954 /* PullUpController.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = PullUpController.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		79F4FAA2380B9E03FF9DE31DABF0669C /* Pods-PullUpController_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PullUpController_Example-resources.sh"; sourceTree = "<group>"; };
+		8AAE02B10DCAF71B4C8DA0F59BB3F4D4 /* PullUpController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PullUpController.swift; path = PullUpController/PullUpController.swift; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9F56E5FB334BA9037FAA64158F05C7D6 /* PullUpController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = PullUpController.modulemap; sourceTree = "<group>"; };
+		BB536EBEECAC21C47D62C1DF0D798356 /* Pods-PullUpController_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PullUpController_Example-dummy.m"; sourceTree = "<group>"; };
+		BB9F8EA9DDF18EABDC0BB608ACF09769 /* Pods-PullUpController_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PullUpController_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		BF0DB4470D13394EFA28A938F1A38755 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		C5B8751D4FDEC7CA05976A501C20CE94 /* PullUpController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PullUpController-dummy.m"; sourceTree = "<group>"; };
+		C8FA5C2BF2D4AFB310AB73255CE621BC /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D755ED3538F9C07483D9251773906FF9 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA07B630F7B2CEB638C65108EE8C97AF /* Pods_PullUpController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_PullUpController_Example.framework; path = "Pods-PullUpController_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCF8A9AF865D53B852B08F7253C08494 /* Pods-PullUpController_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PullUpController_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		DD9FE163A3EEF9FA109361613CC05E88 /* Pods-PullUpController_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-PullUpController_Example.modulemap"; sourceTree = "<group>"; };
+		DE129AA35E6DD8D1AC44CED9A162F31F /* PullUpController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PullUpController.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		68399AA00D7ED1FAE5D85A2356B715F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB3DAB06F8E1C5D93F78EDD7AB44A67E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7956F4F535B023771CF75A099890F970 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E371467500760254B3FDE804F871C01F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		029F610A648A9E8A3E4E658B2A17BCA7 /* Pods-PullUpController_Example */ = {
+			isa = PBXGroup;
+			children = (
+				D755ED3538F9C07483D9251773906FF9 /* Info.plist */,
+				DD9FE163A3EEF9FA109361613CC05E88 /* Pods-PullUpController_Example.modulemap */,
+				40664F6BBDF3B9CD293C19FB51C67E34 /* Pods-PullUpController_Example-acknowledgements.markdown */,
+				BB9F8EA9DDF18EABDC0BB608ACF09769 /* Pods-PullUpController_Example-acknowledgements.plist */,
+				BB536EBEECAC21C47D62C1DF0D798356 /* Pods-PullUpController_Example-dummy.m */,
+				1018868A7D2730AD2239974DEC2BB3EC /* Pods-PullUpController_Example-frameworks.sh */,
+				79F4FAA2380B9E03FF9DE31DABF0669C /* Pods-PullUpController_Example-resources.sh */,
+				13054176DE8FD7682EA5876D0559D994 /* Pods-PullUpController_Example-umbrella.h */,
+				DCF8A9AF865D53B852B08F7253C08494 /* Pods-PullUpController_Example.debug.xcconfig */,
+				21F144D6F2B3882BC5FD9933E31927EA /* Pods-PullUpController_Example.release.xcconfig */,
+			);
+			name = "Pods-PullUpController_Example";
+			path = "Target Support Files/Pods-PullUpController_Example";
+			sourceTree = "<group>";
+		};
+		7BAD67385D0C43E7DA5CAF14D803C9B3 /* PullUpController */ = {
+			isa = PBXGroup;
+			children = (
+				8AAE02B10DCAF71B4C8DA0F59BB3F4D4 /* PullUpController.swift */,
+				9338AE7FCA03262521D339B678C6DDA9 /* Pod */,
+				F3A348D06466386159932F373F839F8A /* Support Files */,
+			);
+			name = PullUpController;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				BB16A59184FD9A5B1E8359F87D3D0E62 /* Development Pods */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				B9052FE89FBCC9091AC04DA17B7D5702 /* Products */,
+				9CCF54054156BC7F2DAD2E85902CE025 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		9338AE7FCA03262521D339B678C6DDA9 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				3C31DAEE49BC012D13D12539B321D0A3 /* LICENSE */,
+				50E3AF474793B9EE7DE53500151B8954 /* PullUpController.podspec */,
+				BF0DB4470D13394EFA28A938F1A38755 /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		9CCF54054156BC7F2DAD2E85902CE025 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				029F610A648A9E8A3E4E658B2A17BCA7 /* Pods-PullUpController_Example */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		B9052FE89FBCC9091AC04DA17B7D5702 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA07B630F7B2CEB638C65108EE8C97AF /* Pods_PullUpController_Example.framework */,
+				2C5AA6A33D63B64686BB7A5B6B78E35B /* PullUpController.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BB16A59184FD9A5B1E8359F87D3D0E62 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7BAD67385D0C43E7DA5CAF14D803C9B3 /* PullUpController */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D35AF013A5F0BAD4F32504907A52519E /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D35AF013A5F0BAD4F32504907A52519E /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		F3A348D06466386159932F373F839F8A /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C8FA5C2BF2D4AFB310AB73255CE621BC /* Info.plist */,
+				9F56E5FB334BA9037FAA64158F05C7D6 /* PullUpController.modulemap */,
+				DE129AA35E6DD8D1AC44CED9A162F31F /* PullUpController.xcconfig */,
+				C5B8751D4FDEC7CA05976A501C20CE94 /* PullUpController-dummy.m */,
+				483D1843AE28A17CB5FD474CEE4AF6BB /* PullUpController-prefix.pch */,
+				23CC8DB9AF358116FE5F077A38A91D66 /* PullUpController-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/PullUpController";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		0D41126CBF9C129313DEC023CC93CF47 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2955C19063DF47E923334A533D99F273 /* Pods-PullUpController_Example-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FBADA4F2CE146E6B2CDCEEB2F073F9C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8031195AB9B2F6F1140776E5BDA4A34C /* PullUpController-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		88A21A82856B75E85E451F68BE9B66F7 /* PullUpController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16FFB3C2338453E99B74D534984F78AF /* Build configuration list for PBXNativeTarget "PullUpController" */;
+			buildPhases = (
+				7E66410792C029213D6F33CF4D65B8F6 /* Sources */,
+				68399AA00D7ED1FAE5D85A2356B715F7 /* Frameworks */,
+				5FBADA4F2CE146E6B2CDCEEB2F073F9C /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PullUpController;
+			productName = PullUpController;
+			productReference = 2C5AA6A33D63B64686BB7A5B6B78E35B /* PullUpController.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		9B7B5B1BA4CD6DBC28237C8242FDAC97 /* Pods-PullUpController_Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3271BBD358556CAFA956B27A0236CA70 /* Build configuration list for PBXNativeTarget "Pods-PullUpController_Example" */;
+			buildPhases = (
+				05A7696B59DEBED8A9BA94BD58F3B8E9 /* Sources */,
+				7956F4F535B023771CF75A099890F970 /* Frameworks */,
+				0D41126CBF9C129313DEC023CC93CF47 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F5F72EFF015DAE50ACE2F392FFEE1F81 /* PBXTargetDependency */,
+			);
+			name = "Pods-PullUpController_Example";
+			productName = "Pods-PullUpController_Example";
+			productReference = DA07B630F7B2CEB638C65108EE8C97AF /* Pods_PullUpController_Example.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0930;
+				LastUpgradeCheck = 0930;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = B9052FE89FBCC9091AC04DA17B7D5702 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9B7B5B1BA4CD6DBC28237C8242FDAC97 /* Pods-PullUpController_Example */,
+				88A21A82856B75E85E451F68BE9B66F7 /* PullUpController */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		05A7696B59DEBED8A9BA94BD58F3B8E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E010BBE3A0DCA0581AEA0F8AE4F58BFC /* Pods-PullUpController_Example-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E66410792C029213D6F33CF4D65B8F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F698D35311AF7A82832B9961D8567285 /* PullUpController-dummy.m in Sources */,
+				F12BA5B5DD5E409088A60EE72BAD20DD /* PullUpController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F5F72EFF015DAE50ACE2F392FFEE1F81 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PullUpController;
+			target = 88A21A82856B75E85E451F68BE9B66F7 /* PullUpController */;
+			targetProxy = F8C04CCB6BD040FDB99775BF786172D0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		41698083C7A3797BC8B6A26752DD851A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DCF8A9AF865D53B852B08F7253C08494 /* Pods-PullUpController_Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PullUpController_Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PullUpController_Example/Pods-PullUpController_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		5B72497DEE340A664F983CB2EF6ED00D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DE129AA35E6DD8D1AC44CED9A162F31F /* PullUpController.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/PullUpController/PullUpController-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/PullUpController/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/PullUpController/PullUpController.modulemap";
+				PRODUCT_MODULE_NAME = PullUpController;
+				PRODUCT_NAME = PullUpController;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		74128B20A2ECF810A017E7EDD9B348C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DE129AA35E6DD8D1AC44CED9A162F31F /* PullUpController.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/PullUpController/PullUpController-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/PullUpController/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/PullUpController/PullUpController.modulemap";
+				PRODUCT_MODULE_NAME = PullUpController;
+				PRODUCT_NAME = PullUpController;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		8B33C5230DE4A9DFA6D8F46505DD7AF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		B42B54097A876E8A982CBF5DAA91B1AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		DE5E330B58FACE48D79870B93F2ACFF4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 21F144D6F2B3882BC5FD9933E31927EA /* Pods-PullUpController_Example.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PullUpController_Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PullUpController_Example/Pods-PullUpController_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		16FFB3C2338453E99B74D534984F78AF /* Build configuration list for PBXNativeTarget "PullUpController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74128B20A2ECF810A017E7EDD9B348C4 /* Debug */,
+				5B72497DEE340A664F983CB2EF6ED00D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B33C5230DE4A9DFA6D8F46505DD7AF7 /* Debug */,
+				B42B54097A876E8A982CBF5DAA91B1AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3271BBD358556CAFA956B27A0236CA70 /* Build configuration list for PBXNativeTarget "Pods-PullUpController_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41698083C7A3797BC8B6A26752DD851A /* Debug */,
+				DE5E330B58FACE48D79870B93F2ACFF4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

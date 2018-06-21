@@ -1,0 +1,16 @@
+PODS:
+  - PullUpController (0.2.0)
+
+DEPENDENCIES:
+  - PullUpController (from `../`)
+
+EXTERNAL SOURCES:
+  PullUpController:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  PullUpController: 7df1d1e15cf588cecda202879275aeafae1f8a81
+
+PODFILE CHECKSUM: 33dfca2e6c424e0eb19d05b0b6293a44ee627326
+
+COCOAPODS: 1.5.0
