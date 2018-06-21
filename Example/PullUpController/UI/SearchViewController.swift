@@ -35,12 +35,16 @@ class SearchViewController: PullUpController {
         tableView.attach(to: self)
         setupDataSource()
         
-        self.willMoveToStickyPoint = { point in
+        willMoveToStickyPoint = { point in
             print("willMoveToStickyPoint \(point)")
         }
 
-        self.didMoveToStickyPoint = { point in
+        didMoveToStickyPoint = { point in
             print("didMoveToStickyPoint \(point)")
+        }
+        
+        onDrag = { point in
+            print("onDrag: \(point)")
         }
     }
 

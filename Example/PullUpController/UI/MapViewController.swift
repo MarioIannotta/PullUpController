@@ -34,5 +34,6 @@ class MapViewController: UIViewController {
         
         mapView.setRegion(region, animated: true)
     }
+    
 }
 

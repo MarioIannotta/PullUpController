@@ -25,6 +25,12 @@ open class PullUpController: UIViewController {
     open var didMoveToStickyPoint: ((_ point: CGFloat) -> Void)?
     
     /**
+     The closure to execute when the view controller's view is dragged.
+     The point, expressed in the pull up controller parent coordinate system, is provided in the closure parameter.
+     */
+    open var onDrag: ((_ point: CGFloat) -> Void)?
+    
+    /**
      The desired height in screen units expressed in the pull up controller coordinate system that will be initially showed.
      The default value is 50.
      */
@@ -198,6 +204,8 @@ open class PullUpController: UIViewController {
             topConstraint.constant = max(topConstraint.constant, parentViewHeight - pullUpControllerPreferredSize.height)
             topConstraint.constant = min(topConstraint.constant, parentViewHeight - pullUpControllerPreviewOffset)
         }
+        
+        onDrag?(topConstraint.constant)
         
         if gestureRecognizer.state == .ended {
             let yVelocity = gestureRecognizer.velocity(in: view).y // v = px/s
