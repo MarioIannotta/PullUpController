@@ -285,6 +285,7 @@ extension UIViewController {
      - parameter pullUpController: the pull up controller to add as a child of the current view controller.
      */
     open func addPullUpController(_ pullUpController: PullUpController) {
+        assert(!(self is UITableViewController), "It's not possible to attach a PullUpController to a UITableViewController. Check this issue for more information: https://github.com/MarioIannotta/PullUpController/issues/14")
         addChildViewController(pullUpController)
         
         pullUpController.view.translatesAutoresizingMaskIntoConstraints = false
