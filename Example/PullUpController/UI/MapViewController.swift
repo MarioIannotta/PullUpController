@@ -25,7 +25,7 @@ class MapViewController: UIViewController {
                 .instantiateViewController(withIdentifier: "SearchViewController") as? SearchViewController
             else { return }
         
-        addPullUpController(pullUpController)
+        addPullUpController(pullUpController, animated: true)
     }
     
     func zoom(to location: CLLocationCoordinate2D) {
@@ -33,6 +33,20 @@ class MapViewController: UIViewController {
         let region = MKCoordinateRegionMake(location, span)
         
         mapView.setRegion(region, animated: true)
+    }
+    
+    @IBAction private func addButtonTapped() {
+        guard
+            childViewControllers.filter({ $0 is SearchViewController }).count == 0
+            else { return }
+        addPullUpController()
+    }
+    
+    @IBAction private func removeButtonTapped() {
+        guard
+            let pullUpController = childViewControllers.filter({ $0 is SearchViewController }).first as? SearchViewController
+            else { return }
+        removePullUpController(pullUpController, animated: true)
     }
     
 }

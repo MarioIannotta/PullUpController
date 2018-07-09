@@ -94,7 +94,7 @@ extension SearchViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if let lastStickyPoint = pullUpControllerAllStickyPoints.last {
-            pullUpControllerMoveToVisiblePoint(lastStickyPoint, completion: nil)
+            pullUpControllerMoveToVisiblePoint(lastStickyPoint, animated: true, completion: nil)
         }
     }
     
@@ -126,7 +126,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         view.endEditing(true)
-        pullUpControllerMoveToVisiblePoint(pullUpControllerMiddleStickyPoints[0], completion: nil)
+        pullUpControllerMoveToVisiblePoint(pullUpControllerMiddleStickyPoints[0], animated: true, completion: nil)
         
         (parent as? MapViewController)?.zoom(to: locations[indexPath.row].location)
     }

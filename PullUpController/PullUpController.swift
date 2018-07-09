@@ -106,21 +106,26 @@ open class PullUpController: UIViewController {
      
      You may use on of `pullUpControllerAllStickyPoints` item to provide a valid visible point.
      - parameter visiblePoint: the y value to make visible, in screen units expressed in the pull up controller coordinate system.
+     - parameter animated: Pass true to animate the move; otherwise, pass false
      - parameter completion: The closure to execute after the animation is completed. This block has no return value and takes no parameters. You may specify nil for this parameter.
      */
-    open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, completion: (() -> Void)?) {
+    open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, animated: Bool, completion: (() -> Void)?) {
         guard isPortrait else { return }
         topConstraint?.constant = (parent?.view.frame.height ?? 0) - visiblePoint
         
-        UIView.animate(
-            withDuration: 0.3,
-            animations: { [weak self] in
-                self?.parent?.view?.layoutIfNeeded()
-            },
-            completion: { _ in
-                completion?()
-            }
-        )
+        if animated {
+            UIView.animate(
+                withDuration: 0.3,
+                animations: { [weak self] in
+                    self?.parent?.view?.layoutIfNeeded()
+                },
+                completion: { _ in
+                    completion?()
+                })
+        } else {
+            parent?.view?.layoutIfNeeded()
+            completion?()
+        }
     }
     
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -140,7 +145,7 @@ open class PullUpController: UIViewController {
         coordinator.animate(alongsideTransition: { [weak self] coordinator in
             self?.refreshConstraints(size: size)
             if let targetStickyPoint = targetStickyPoint {
-                self?.pullUpControllerMoveToVisiblePoint(targetStickyPoint, completion: nil)
+                self?.pullUpControllerMoveToVisiblePoint(targetStickyPoint, animated: true, completion: nil)
             }
         })
     }
@@ -284,16 +289,35 @@ extension UIViewController {
      Adds the specified pull up view controller as a child of the current view controller.
      - parameter pullUpController: the pull up controller to add as a child of the current view controller.
      */
-    open func addPullUpController(_ pullUpController: PullUpController) {
+    open func addPullUpController(_ pullUpController: PullUpController, animated: Bool) {
         assert(!(self is UITableViewController), "It's not possible to attach a PullUpController to a UITableViewController. Check this issue for more information: https://github.com/MarioIannotta/PullUpController/issues/14")
         addChildViewController(pullUpController)
         
         pullUpController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(pullUpController.view)
+        pullUpController.view.frame = CGRect(origin: CGPoint(x: pullUpController.view.frame.origin.x,
+                                                             y: view.bounds.height),
+                                             size: pullUpController.view.frame.size)
         
         pullUpController.setupPanGestureRecognizer()
         pullUpController.setupConstraints()
         pullUpController.refreshConstraints(size: view.frame.size)
+        
+        if animated {
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                self?.view.layoutIfNeeded()
+            }
+        } else {
+            view.layoutIfNeeded()
+        }
+    }
+    
+    open func removePullUpController(_ pullUpController: PullUpController, animated: Bool) {
+        pullUpController.pullUpControllerMoveToVisiblePoint(0, animated: animated) {
+            pullUpController.willMove(toParentViewController: nil)
+            pullUpController.view.removeFromSuperview()
+            pullUpController.removeFromParentViewController()
+        }
     }
     
 }
