@@ -333,11 +333,11 @@ extension UIScrollView {
     }
     
     /**
-	Remove the scroll view from the pull up controller so it no longer moves with the scroll view content.
-	 - parameter pullUpController: the pull up controller to be removed from controlling the scroll view.
-	**/
-	open func detach(from pullUpController: PullUpController) {
-		panGestureRecognizer.removeTarget(pullUpController, action: #selector(pullUpController.handleInternalScrollViewPanGestureRecognizer(_:)))
-	}
-    
+     Remove the scroll view from the pull up controller so it no longer moves with the scroll view content.
+     - parameter pullUpController: the pull up controller to be removed from controlling the scroll view.
+     */
+    open func detach(from pullUpController: PullUpController) {
+        panGestureRecognizer.removeTarget(pullUpController, action: #selector(pullUpController.handleInternalScrollViewPanGestureRecognizer(_:)))
+    }
+
 }
