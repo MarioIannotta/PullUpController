@@ -253,6 +253,8 @@ open class PullUpController: UIViewController {
             withDuration: animationDuration,
             animations: { [weak self] in
                 self?.parent?.view.layoutIfNeeded()
+            },
+            completion: { [weak self] _ in
                 let point = (self?.parent?.view.frame.height ?? 0.0) - (self?.topConstraint?.constant ?? 0.0)
                 self?.didMoveToStickyPoint?(point)
             }
@@ -332,4 +334,12 @@ extension UIScrollView {
         panGestureRecognizer.addTarget(pullUpController, action: #selector(pullUpController.handleInternalScrollViewPanGestureRecognizer(_:)))
     }
     
+    /**
+     Remove the scroll view from the pull up controller so it no longer moves with the scroll view content.
+     - parameter pullUpController: the pull up controller to be removed from controlling the scroll view.
+     */
+    open func detach(from pullUpController: PullUpController) {
+        panGestureRecognizer.removeTarget(pullUpController, action: #selector(pullUpController.handleInternalScrollViewPanGestureRecognizer(_:)))
+    }
+
 }
