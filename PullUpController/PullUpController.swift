@@ -253,6 +253,7 @@ open class PullUpController: UIViewController {
             withDuration: animationDuration,
             animations: { [weak self] in
                 self?.parent?.view.layoutIfNeeded()
+            }, completion: { [weak self] b in
                 let point = (self?.parent?.view.frame.height ?? 0.0) - (self?.topConstraint?.constant ?? 0.0)
                 self?.didMoveToStickyPoint?(point)
             }
