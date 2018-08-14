@@ -47,6 +47,14 @@ open class PullUpController: UIViewController {
     }
     
     /**
+     The desired size of the pull up controller’s view, in screen units when the device is in landscape mode.
+     The default value is (x: 10, y: 10, width: 300, height: UIScreen.main.bounds.height - 20).
+     */
+    open var pullUpControllerPreferredLandscapeFrame: CGRect {
+        return CGRect(x: 10, y: 10, width: 300, height: UIScreen.main.bounds.height - 20)
+    }
+    
+    /**
      A list of y values, in screen units expressed in the pull up controller coordinate system.
      At the end of the gestures the pull up controller will scroll to the nearest point in the list.
      
@@ -65,14 +73,6 @@ open class PullUpController: UIViewController {
      */
     open var pullUpControllerIsBouncingEnabled: Bool {
         return false
-    }
-    
-    /**
-     The desired size of the pull up controller’s view, in screen units when the device is in landscape mode.
-     The default value is (x: 10, y: 10, width: 300, height: UIScreen.main.bounds.height - 20).
-     */
-    open var pullUpControllerPreferredLandscapeFrame: CGRect {
-        return CGRect(x: 10, y: 10, width: 300, height: UIScreen.main.bounds.height - 20)
     }
     
     // MARK: - Public properties
@@ -110,7 +110,7 @@ open class PullUpController: UIViewController {
      
      You may use on of `pullUpControllerAllStickyPoints` item to provide a valid visible point.
      - parameter visiblePoint: the y value to make visible, in screen units expressed in the pull up controller coordinate system.
-     - parameter animated: Pass true to animate the move; otherwise, pass false
+     - parameter animated: Pass true to animate the move; otherwise, pass false.
      - parameter completion: The closure to execute after the animation is completed. This block has no return value and takes no parameters. You may specify nil for this parameter.
      */
     open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, animated: Bool, completion: (() -> Void)?) {
@@ -134,11 +134,28 @@ open class PullUpController: UIViewController {
         }
     }
     
+    /**
+     This method update the pull up controller's view size according to `pullUpControllerPreferredSize` and `pullUpControllerPreferredLandscapeFrame`.
+     If the device is in portrait, the pull up controller's view will be attached to the nearest sticky point after the resize.
+     - parameter animated: Pass true to animate the resize; otherwise, pass false.
+    */
+    open func updatePreferredFrameIfNeeded(animated: Bool) {
+        guard
+            let parentView = parent?.view
+            else { return }
+        refreshConstraints(newSize: parentView.frame.size, resetTop: false)
+        
+        UIView.animate(withDuration: animated ? 0.3 : 0) { [weak self] in
+            self?.view.layoutIfNeeded()
+        }
+    }
+    
+    
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        let isPortrait = size.height > size.width
+        let isNewSizePortrait = size.height > size.width
         var targetStickyPoint: CGFloat?
         
-        if !isPortrait {
+        if !isNewSizePortrait {
             portraitPreviousStickyPointIndex = currentStickyPointIndex
         } else if
             let portraitPreviousStickyPointIndex = portraitPreviousStickyPointIndex,
@@ -149,7 +166,7 @@ open class PullUpController: UIViewController {
         }
         
         coordinator.animate(alongsideTransition: { [weak self] coordinator in
-            self?.refreshConstraints(size: size)
+            self?.refreshConstraints(newSize: size)
             if let targetStickyPoint = targetStickyPoint {
                 self?.pullUpControllerMoveToVisiblePoint(targetStickyPoint, animated: true, completion: nil)
             }
@@ -158,7 +175,19 @@ open class PullUpController: UIViewController {
     
     // MARK: - Setup
     
-    fileprivate func setupPanGestureRecognizer() {
+    fileprivate func setupView(superview: UIView) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        superview.addSubview(view)
+        view.frame = CGRect(origin: CGPoint(x: view.frame.origin.x,
+                                            y: superview.bounds.height),
+                            size: view.frame.size)
+        
+        setupPanGestureRecognizer()
+        setupConstraints()
+        refreshConstraints(newSize: view.frame.size)
+    }
+    
+    private func setupPanGestureRecognizer() {
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGestureRecognizer(_:)))
         panGestureRecognizer?.minimumNumberOfTouches = 1
         panGestureRecognizer?.maximumNumberOfTouches = 1
@@ -168,7 +197,7 @@ open class PullUpController: UIViewController {
         }
     }
     
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         guard
             let parentView = parent?.view
             else { return }
@@ -179,6 +208,14 @@ open class PullUpController: UIViewController {
         heightConstraint = view.heightAnchor.constraint(equalToConstant: pullUpControllerPreferredSize.height)
         
         NSLayoutConstraint.activate([topConstraint, leftConstraint, widthConstraint, heightConstraint].compactMap { $0 })
+    }
+    
+    private func refreshConstraints(newSize: CGSize, resetTop: Bool = true) {
+        if newSize.height > newSize.width {
+            setPortraitConstraints(parentViewSize: newSize, resetTop: resetTop)
+        } else {
+            setLandscapeConstraints()
+        }
     }
     
     private var currentStickyPointIndex: Int {
@@ -279,8 +316,12 @@ open class PullUpController: UIViewController {
         )
     }
     
-    private func setPortraitConstraints(parentViewSize: CGSize) {
-        topConstraint?.constant = parentViewSize.height - pullUpControllerPreviewOffset
+    private func setPortraitConstraints(parentViewSize: CGSize, resetTop: Bool) {
+        if resetTop {
+            topConstraint?.constant = parentViewSize.height - pullUpControllerPreviewOffset
+        } else {
+            topConstraint?.constant = nearestStickyPointY(yVelocity: 0)
+        }
         leftConstraint?.constant = (parentViewSize.width - min(pullUpControllerPreferredSize.width, parentViewSize.width))/2
         widthConstraint?.constant = pullUpControllerPreferredSize.width
         heightConstraint?.constant = pullUpControllerPreferredSize.height
@@ -291,14 +332,6 @@ open class PullUpController: UIViewController {
         leftConstraint?.constant = pullUpControllerPreferredLandscapeFrame.origin.x
         widthConstraint?.constant = pullUpControllerPreferredLandscapeFrame.width
         heightConstraint?.constant = pullUpControllerPreferredLandscapeFrame.height
-    }
-    
-    fileprivate func refreshConstraints(size: CGSize) {
-        if size.width > size.height {
-            setLandscapeConstraints()
-        } else {
-            setPortraitConstraints(parentViewSize: size)
-        }
     }
     
 }
@@ -321,17 +354,7 @@ extension UIViewController {
     open func addPullUpController(_ pullUpController: PullUpController, animated: Bool) {
         assert(!(self is UITableViewController), "It's not possible to attach a PullUpController to a UITableViewController. Check this issue for more information: https://github.com/MarioIannotta/PullUpController/issues/14")
         addChildViewController(pullUpController)
-        
-        pullUpController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(pullUpController.view)
-        pullUpController.view.frame = CGRect(origin: CGPoint(x: pullUpController.view.frame.origin.x,
-                                                             y: view.bounds.height),
-                                             size: pullUpController.view.frame.size)
-        
-        pullUpController.setupPanGestureRecognizer()
-        pullUpController.setupConstraints()
-        pullUpController.refreshConstraints(size: view.frame.size)
-        
+        pullUpController.setupView(superview: view)
         if animated {
             UIView.animate(withDuration: 0.3) { [weak self] in
                 self?.view.layoutIfNeeded()

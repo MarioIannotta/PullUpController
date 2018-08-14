@@ -27,10 +27,17 @@ class SearchViewController: PullUpController {
 
     private var locations = [(title: String, location: CLLocationCoordinate2D)]()
     
+    public var portraitSize: CGSize = .zero
+    public var landscapeFrame: CGRect = .zero
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        portraitSize = CGSize(width: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height),
+                              height: secondPreviewView.frame.maxY)
+        landscapeFrame = CGRect(x: 5, y: 50, width: 280, height: 300)
         
         tableView.attach(to: self)
         setupDataSource()
@@ -68,7 +75,11 @@ class SearchViewController: PullUpController {
     // MARK: - PullUpController
     
     override var pullUpControllerPreferredSize: CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: secondPreviewView.frame.maxY)
+        return portraitSize
+    }
+    
+    override var pullUpControllerPreferredLandscapeFrame: CGRect {
+        return landscapeFrame
     }
     
     override var pullUpControllerPreviewOffset: CGFloat {
@@ -83,9 +94,6 @@ class SearchViewController: PullUpController {
         return false
     }
     
-    override var pullUpControllerPreferredLandscapeFrame: CGRect {
-        return CGRect(x: 5, y: 5, width: 280, height: UIScreen.main.bounds.height - 10)
-    }
 }
 
 // MARK: - UISearchBarDelegate
