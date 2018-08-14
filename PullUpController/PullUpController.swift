@@ -99,6 +99,10 @@ open class PullUpController: UIViewController {
     
     private var portraitPreviousStickyPointIndex: Int?
     
+    fileprivate weak var internalScrollView: UIScrollView?
+    
+    private var initialInternalScrollViewContentOffset: CGPoint = .zero
+    
     // MARK: - Open methods
     
     /**
@@ -110,7 +114,9 @@ open class PullUpController: UIViewController {
      - parameter completion: The closure to execute after the animation is completed. This block has no return value and takes no parameters. You may specify nil for this parameter.
      */
     open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, animated: Bool, completion: (() -> Void)?) {
-        guard isPortrait else { return }
+        guard
+            isPortrait
+            else { return }
         topConstraint?.constant = (parent?.view.frame.height ?? 0) - visiblePoint
         
         if animated {
@@ -156,13 +162,16 @@ open class PullUpController: UIViewController {
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGestureRecognizer(_:)))
         panGestureRecognizer?.minimumNumberOfTouches = 1
         panGestureRecognizer?.maximumNumberOfTouches = 1
+        panGestureRecognizer?.delegate = self
         if let panGestureRecognizer = panGestureRecognizer {
             view.addGestureRecognizer(panGestureRecognizer)
         }
     }
     
     fileprivate func setupConstraints() {
-        guard let parentView = parent?.view else { return }
+        guard
+            let parentView = parent?.view
+            else { return }
         
         topConstraint = view.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 0)
         leftConstraint = view.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 0)
@@ -197,60 +206,69 @@ open class PullUpController: UIViewController {
         guard
             isPortrait,
             let topConstraint = topConstraint,
+            let lastStickyPoint = pullUpControllerAllStickyPoints.last,
             let parentViewHeight = parent?.view.frame.height
             else { return }
         
-        let yTranslation = gestureRecognizer.translation(in: view).y
-        gestureRecognizer.setTranslation(.zero, in: view)
-        
-        topConstraint.constant += yTranslation
-        
-        if !pullUpControllerIsBouncingEnabled {
-            topConstraint.constant = max(topConstraint.constant, parentViewHeight - pullUpControllerPreferredSize.height)
-            topConstraint.constant = min(topConstraint.constant, parentViewHeight - pullUpControllerPreviewOffset)
-        }
-        
-        onDrag?(topConstraint.constant)
-        
-        if gestureRecognizer.state == .ended {
+        switch gestureRecognizer.state {
+        case .began:
+            initialInternalScrollViewContentOffset = internalScrollView?.contentOffset ?? .zero
+            
+        case .changed:
+            var shouldUpdateTopOffset = false
+            let scrollViewPanVelocity = internalScrollView?.panGestureRecognizer.velocity(in: view).y ?? 0
+            if scrollViewPanVelocity != 0 {
+                let isScrollingDown = scrollViewPanVelocity > 0
+                let shouldScrollingDownTriggerGestureRecognizer = isScrollingDown && internalScrollView?.contentOffset.y ?? 0 <= 0
+                let shouldScrollingUpTriggerGestureRecognizer = !isScrollingDown && topConstraint.constant != parentViewHeight - lastStickyPoint
+                
+                shouldUpdateTopOffset = shouldScrollingDownTriggerGestureRecognizer || shouldScrollingUpTriggerGestureRecognizer
+                if shouldScrollingDownTriggerGestureRecognizer {
+                    internalScrollView?.panGestureRecognizer.setTranslation(initialInternalScrollViewContentOffset, in: internalScrollView)
+                } else if shouldScrollingUpTriggerGestureRecognizer {
+                    internalScrollView?.contentOffset = initialInternalScrollViewContentOffset
+                    internalScrollView?.panGestureRecognizer.setTranslation(.zero, in: internalScrollView)
+                }
+            } else {
+                shouldUpdateTopOffset = true
+            }
+            
+            if shouldUpdateTopOffset {
+                let yTranslation = gestureRecognizer.translation(in: view).y
+                setTopOffset(topConstraint.constant + yTranslation)
+                gestureRecognizer.setTranslation(.zero, in: view)
+            }
+            
+        case .ended:
             let yVelocity = gestureRecognizer.velocity(in: view).y // v = px/s
-            let oldTopConstraintConstant = topConstraint.constant
-            topConstraint.constant = nearestStickyPointY(yVelocity: yVelocity)
-            let distanceToConver = oldTopConstraintConstant - topConstraint.constant // px
-            let animationDuration = TimeInterval(abs(distanceToConver/yVelocity)) // s = px/v
-            animateLayout(animationDuration: animationDuration)
+            let targetTopOffset = nearestStickyPointY(yVelocity: yVelocity)
+            let distanceToConver = topConstraint.constant - targetTopOffset // px
+            let animationDuration = max(0.08, min(0.3, TimeInterval(abs(distanceToConver/yVelocity)))) // s = px/v
+            setTopOffset(targetTopOffset, animationDuration: animationDuration)
+            
+        default:
+            break
         }
     }
     
-    @objc fileprivate func handleInternalScrollViewPanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
+    private func setTopOffset(_ value: CGFloat, animationDuration: TimeInterval? = nil) {
+        var animationDuration = animationDuration
         guard
-            isPortrait,
-            let scrollView = gestureRecognizer.view as? UIScrollView,
-            let lastStickyPoint = pullUpControllerAllStickyPoints.last,
-            let parentViewHeight = parent?.view.frame.height,
-            let topConstraintValue = topConstraint?.constant
+            let parentViewHeight = parent?.view.frame.height
             else { return }
-        
-        let isScrollingDown = gestureRecognizer.translation(in: view).y > 0
-        let shouldScrollingDownTriggerGestureRecognizer = isScrollingDown && scrollView.contentOffset.y <= 0
-        let shouldScrollingUpTriggerGestureRecognizer = !isScrollingDown && topConstraintValue != parentViewHeight - lastStickyPoint
-        
-        if shouldScrollingDownTriggerGestureRecognizer || shouldScrollingUpTriggerGestureRecognizer {
-            handlePanGestureRecognizer(gestureRecognizer)
+        var value = value
+        if !pullUpControllerIsBouncingEnabled {
+            value = max(value, parentViewHeight - pullUpControllerPreferredSize.height)
+            value = min(value, parentViewHeight - pullUpControllerPreviewOffset)
         }
-        
-        if gestureRecognizer.state.rawValue == 3 { // for some reason gestureRecognizer.state == .ended doesn't work
-            topConstraint?.constant = nearestStickyPointY(yVelocity: 0)
-            animateLayout()
+        if abs(topConstraint?.constant ?? 0 - value) > 10 {
+            animationDuration = 0.2
         }
-    }
-    
-    private func animateLayout(animationDuration: TimeInterval? = nil) {
-        let defaultAnimationDuration = 0.3
-        let animationDuration = max(0.08, min(defaultAnimationDuration, animationDuration ?? defaultAnimationDuration))
+        topConstraint?.constant = value
+        onDrag?(value)
         
         UIView.animate(
-            withDuration: animationDuration,
+            withDuration: animationDuration ?? 0,
             animations: { [weak self] in
                 self?.parent?.view.layoutIfNeeded()
             },
@@ -281,6 +299,15 @@ open class PullUpController: UIViewController {
         } else {
             setPortraitConstraints(parentViewSize: size)
         }
+    }
+    
+}
+
+extension PullUpController: UIGestureRecognizerDelegate {
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
 }
@@ -331,7 +358,7 @@ extension UIScrollView {
      - parameter pullUpController: the pull up controller to move with the current scroll view content.
      */
     open func attach(to pullUpController: PullUpController) {
-        panGestureRecognizer.addTarget(pullUpController, action: #selector(pullUpController.handleInternalScrollViewPanGestureRecognizer(_:)))
+        pullUpController.internalScrollView = self
     }
     
     /**
@@ -339,7 +366,7 @@ extension UIScrollView {
      - parameter pullUpController: the pull up controller to be removed from controlling the scroll view.
      */
     open func detach(from pullUpController: PullUpController) {
-        panGestureRecognizer.removeTarget(pullUpController, action: #selector(pullUpController.handleInternalScrollViewPanGestureRecognizer(_:)))
+        pullUpController.internalScrollView = nil
     }
 
 }
