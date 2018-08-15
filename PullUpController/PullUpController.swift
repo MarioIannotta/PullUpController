@@ -247,57 +247,69 @@ open class PullUpController: UIViewController {
             let parentView = parent?.view
             else { return }
         
+        let parentViewHeight = parentView.frame.height
+        var yTranslation = gestureRecognizer.translation(in: parentView).y
+        gestureRecognizer.setTranslation(.zero, in: view)
+        
+        let scrollViewPanVelocity = internalScrollView?.panGestureRecognizer.velocity(in: parentView).y ?? 0
+        let isScrollingDown = scrollViewPanVelocity > 0
+        
+        /**
+         A Boolean value that controls whether the scroll view scroll should pan the parent view up **or** down.
+         
+         1. The user should be able to drag the view down through the internal scroll view when
+            - the scroll direction is down (`isScrollingDown`)
+            - the internal scroll view is scrolled to the top (`scrollView.contentOffset.y <= 0`)
+         
+         2. The user should be able to drag the view up through the internal scroll view when
+            - the scroll direction is up (`!isScrollingDown`)
+            - the PullUpController's view is fully opened. (`topConstraint.constant != parentViewHeight - lastStickyPoint`)
+         */
+        let shouldDragView: Bool = {
+            // Condition 1
+            let shouldDragViewDown = isScrollingDown && internalScrollView?.contentOffset.y ?? 0 <= 0
+            // Condition 2
+            let shouldDragViewUp = !isScrollingDown && topConstraint.constant != parentViewHeight - lastStickyPoint
+            return shouldDragViewDown || shouldDragViewUp
+        }()
+        
         switch gestureRecognizer.state {
         case .began:
             initialInternalScrollViewContentOffset = internalScrollView?.contentOffset ?? .zero
             
         case .changed:
-            var yTranslation = gestureRecognizer.translation(in: parentView).y
-            gestureRecognizer.setTranslation(.zero, in: view)
-            let scrollViewPanVelocity = internalScrollView?.panGestureRecognizer.velocity(in: parentView).y ?? 0
-            
             // the user is scrolling the internal scroll view
             if scrollViewPanVelocity != 0, let scrollView = internalScrollView {
-                let parentViewHeight = parentView.frame.height
-                let isScrollingDown = scrollViewPanVelocity > 0
-                /*
-                 the user should be able to drag the view down through the internal scroll view when
-                 1. the scroll direction is down (isScrollingDown)
-                 2. the internal scroll view is scrolled to the top (scrollView.contentOffset.y <= 0)
-                 */
-                let shouldDragViewDown = isScrollingDown && scrollView.contentOffset.y <= 0
-                /*
-                 the user should be able to drag the view up through the internal scroll view when
-                 1. the scroll direction is up (!isScrollingDown)
-                 2. the PullUpController's view is not at it's last sticky point (fully opened aka topConstraint.constant != parentViewHeight - lastStickyPoint)
-                */
-                let shouldDragViewUp = !isScrollingDown && topConstraint.constant != parentViewHeight - lastStickyPoint
-                
-                if shouldDragViewDown || shouldDragViewUp {
-                    // disable the bounces when the user is able to drag the view through the internal scroll view
-                    scrollView.bounces = false
-                    if isScrollingDown {
-                        // take the initial internal scroll view content offset into account when scrolling down
-                        yTranslation -= initialInternalScrollViewContentOffset.y
-                        initialInternalScrollViewContentOffset = .zero
-                    } else {
-                        // keep the initial internal scroll view content offset when scrolling up
-                        internalScrollView?.contentOffset = initialInternalScrollViewContentOffset
+                // if the user shouldn't be able to drag the view up through the internal scroll view reset the translation
+                guard
+                    shouldDragView
+                    else {
+                        yTranslation = 0
+                        return
                     }
+                // disable the bounces when the user is able to drag the view through the internal scroll view
+                scrollView.bounces = false
+                if isScrollingDown {
+                    // take the initial internal scroll view content offset into account when scrolling down
+                    yTranslation -= initialInternalScrollViewContentOffset.y
+                    initialInternalScrollViewContentOffset = .zero
                 } else {
-                    // reset the translation if the user should'nt be able to drag the view up through the internal scroll view
-                    yTranslation = 0
+                    // keep the initial internal scroll view content offset when scrolling up
+                    internalScrollView?.contentOffset = initialInternalScrollViewContentOffset
                 }
             }
             setTopOffset(topConstraint.constant + yTranslation)
             
         case .ended:
+            internalScrollView?.bounces = true
+            guard
+                shouldDragView
+                else { return }
             let yVelocity = gestureRecognizer.velocity(in: view).y // v = px/s
             let targetTopOffset = nearestStickyPointY(yVelocity: yVelocity)
             let distanceToConver = topConstraint.constant - targetTopOffset // px
             let animationDuration = max(0.08, min(0.3, TimeInterval(abs(distanceToConver/yVelocity)))) // s = px/v
             setTopOffset(targetTopOffset, animationDuration: animationDuration)
-            internalScrollView?.bounces = true
             
         default:
             break
