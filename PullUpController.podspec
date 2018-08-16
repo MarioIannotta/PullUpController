@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'PullUpController'
-  s.version          = '0.4.0'
+  s.version          = '0.4.1'
   s.summary          = 'Pull up controller with multiple sticky points like in iOS Maps.'
   s.homepage         = 'https://github.com/MarioIannotta/PullUpController'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
