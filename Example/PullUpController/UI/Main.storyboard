@@ -22,13 +22,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iMQ-X7-eJt">
-                                <rect key="frame" x="20" y="84" width="250" height="131"/>
+                                <rect key="frame" x="20" y="84" width="250" height="200.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dfq-ok-AvZ">
-                                        <rect key="frame" x="15" y="10" width="220" height="111"/>
+                                        <rect key="frame" x="15" y="10" width="220" height="180.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IPI-H1-hVv">
-                                                <rect key="frame" x="0.0" y="0.0" width="220" height="50.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="220" height="53.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Width" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0NG-ba-qVR">
                                                         <rect key="frame" x="0.0" y="0.0" width="220" height="20.5"/>
@@ -37,7 +37,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="250" minValue="200" maxValue="300" translatesAutoresizingMaskIntoConstraints="NO" id="BBH-5e-dyt">
-                                                        <rect key="frame" x="-2" y="20.5" width="224" height="31"/>
+                                                        <rect key="frame" x="-2" y="20.5" width="224" height="34"/>
                                                         <connections>
                                                             <action selector="widthSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="cry-5o-Xbg"/>
                                                         </connections>
@@ -45,7 +45,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="WHY-rS-cfZ">
-                                                <rect key="frame" x="0.0" y="60.5" width="220" height="50.5"/>
+                                                <rect key="frame" x="0.0" y="63.5" width="220" height="53.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6k7-Vh-uLf">
                                                         <rect key="frame" x="0.0" y="0.0" width="220" height="20.5"/>
@@ -54,11 +54,29 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="300" minValue="200" maxValue="500" translatesAutoresizingMaskIntoConstraints="NO" id="cQL-QM-VLC">
-                                                        <rect key="frame" x="-2" y="20.5" width="224" height="31"/>
+                                                        <rect key="frame" x="-2" y="20.5" width="224" height="34"/>
                                                         <connections>
                                                             <action selector="heightSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="XJ1-K7-F3Y"/>
                                                         </connections>
                                                     </slider>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="54d-DT-NwT">
+                                                <rect key="frame" x="0.0" y="127" width="220" height="53.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Initial state" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFd-3K-gNI">
+                                                        <rect key="frame" x="0.0" y="0.0" width="220" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iWm-ZS-z7f">
+                                                        <rect key="frame" x="0.0" y="25.5" width="220" height="29"/>
+                                                        <segments>
+                                                            <segment title="Contracted"/>
+                                                            <segment title="Expanded"/>
+                                                        </segments>
+                                                    </segmentedControl>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -114,6 +132,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="heightSlider" destination="cQL-QM-VLC" id="IZA-Ju-0mH"/>
+                        <outlet property="initialStateSegmentedControl" destination="iWm-ZS-z7f" id="hG6-Cf-Ter"/>
                         <outlet property="mapView" destination="drN-fA-22T" id="EE5-qd-AEu"/>
                         <outlet property="sizeSliderView" destination="iMQ-X7-eJt" id="5B3-VC-LYw"/>
                         <outlet property="widthSlider" destination="BBH-5e-dyt" id="e2p-It-Bhh"/>

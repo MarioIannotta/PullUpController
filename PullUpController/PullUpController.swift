@@ -31,14 +31,6 @@ open class PullUpController: UIViewController {
     open var onDrag: ((_ point: CGFloat) -> Void)?
     
     /**
-     The desired height in screen units expressed in the pull up controller coordinate system that will be initially showed.
-     The default value is 50.
-     */
-    open var pullUpControllerPreviewOffset: CGFloat {
-        return 50
-    }
-    
-    /**
      The desired size of the pull up controller’s view, in screen units.
      The default value is width: UIScreen.main.bounds.width, height: 400.
      */
@@ -82,7 +74,7 @@ open class PullUpController: UIViewController {
      At the end of the gesture the pull up controller will scroll at the nearest point in the list.
      */
     public final var pullUpControllerAllStickyPoints: [CGFloat] {
-        var sc_allStickyPoints = [pullUpControllerPreviewOffset, pullUpControllerPreferredSize.height]
+        var sc_allStickyPoints = [initialStickyPointOffset, pullUpControllerPreferredSize.height].compactMap { $0 }
         sc_allStickyPoints.append(contentsOf: pullUpControllerMiddleStickyPoints)
         return sc_allStickyPoints.sorted()
     }
@@ -102,6 +94,7 @@ open class PullUpController: UIViewController {
     fileprivate weak var internalScrollView: UIScrollView?
     
     private var initialInternalScrollViewContentOffset: CGPoint = .zero
+    private var initialStickyPointOffset: CGFloat?
     
     // MARK: - Open methods
     
@@ -143,7 +136,8 @@ open class PullUpController: UIViewController {
         guard
             let parentView = parent?.view
             else { return }
-        refreshConstraints(newSize: parentView.frame.size, resetTop: false)
+        refreshConstraints(newSize: parentView.frame.size,
+                           customTopOffset: parentView.frame.size.height - (pullUpControllerAllStickyPoints.first ?? 0))
         
         UIView.animate(withDuration: animated ? 0.3 : 0) { [weak self] in
             self?.view.layoutIfNeeded()
@@ -175,7 +169,8 @@ open class PullUpController: UIViewController {
     
     // MARK: - Setup
     
-    fileprivate func setupView(superview: UIView) {
+    fileprivate func setup(superview: UIView, initialStickyPointOffset: CGFloat) {
+        self.initialStickyPointOffset = initialStickyPointOffset
         view.translatesAutoresizingMaskIntoConstraints = false
         superview.addSubview(view)
         view.frame = CGRect(origin: CGPoint(x: view.frame.origin.x,
@@ -184,7 +179,8 @@ open class PullUpController: UIViewController {
         
         setupPanGestureRecognizer()
         setupConstraints()
-        refreshConstraints(newSize: view.frame.size)
+        refreshConstraints(newSize: view.frame.size,
+                           customTopOffset: superview.frame.height - initialStickyPointOffset)
     }
     
     private func setupPanGestureRecognizer() {
@@ -210,9 +206,9 @@ open class PullUpController: UIViewController {
         NSLayoutConstraint.activate([topConstraint, leftConstraint, widthConstraint, heightConstraint].compactMap { $0 })
     }
     
-    private func refreshConstraints(newSize: CGSize, resetTop: Bool = true) {
+    private func refreshConstraints(newSize: CGSize, customTopOffset: CGFloat? = nil) {
         if newSize.height > newSize.width {
-            setPortraitConstraints(parentViewSize: newSize, resetTop: resetTop)
+            setPortraitConstraints(parentViewSize: newSize, customTopOffset: customTopOffset)
         } else {
             setLandscapeConstraints()
         }
@@ -321,9 +317,11 @@ open class PullUpController: UIViewController {
             let parentViewHeight = parent?.view.frame.height
             else { return }
         var value = value
-        if !pullUpControllerIsBouncingEnabled {
-            value = max(value, parentViewHeight - pullUpControllerPreferredSize.height)
-            value = min(value, parentViewHeight - pullUpControllerPreviewOffset)
+        if !pullUpControllerIsBouncingEnabled,
+            let firstStickyPoint = pullUpControllerAllStickyPoints.first,
+            let lastStickyPoint = pullUpControllerAllStickyPoints.last {
+            value = max(value, parentViewHeight - lastStickyPoint)
+            value = min(value, parentViewHeight - firstStickyPoint)
         }
         topConstraint?.constant = value
         onDrag?(value)
@@ -340,9 +338,9 @@ open class PullUpController: UIViewController {
         )
     }
     
-    private func setPortraitConstraints(parentViewSize: CGSize, resetTop: Bool) {
-        if resetTop {
-            topConstraint?.constant = parentViewSize.height - pullUpControllerPreviewOffset
+    private func setPortraitConstraints(parentViewSize: CGSize, customTopOffset: CGFloat? = nil) {
+        if let customTopOffset = customTopOffset {
+            topConstraint?.constant = customTopOffset
         } else {
             topConstraint?.constant = nearestStickyPointY(yVelocity: 0)
         }
@@ -374,11 +372,15 @@ extension UIViewController {
     /**
      Adds the specified pull up view controller as a child of the current view controller.
      - parameter pullUpController: the pull up controller to add as a child of the current view controller.
+     - parameter initialStickyPointOffset: The point where the provided `pullUpController`'s view will be initially placed expressed in screen units of the pull up controller coordinate system. If this value is not provided, the `pullUpController`'s view will be initially placed expressed
+     - parameter animated: Pass true to animate the adding; otherwise, pass false.
      */
-    open func addPullUpController(_ pullUpController: PullUpController, animated: Bool) {
+    open func addPullUpController(_ pullUpController: PullUpController,
+                                  initialStickyPointOffset: CGFloat,
+                                  animated: Bool) {
         assert(!(self is UITableViewController), "It's not possible to attach a PullUpController to a UITableViewController. Check this issue for more information: https://github.com/MarioIannotta/PullUpController/issues/14")
         addChildViewController(pullUpController)
-        pullUpController.setupView(superview: view)
+        pullUpController.setup(superview: view, initialStickyPointOffset: initialStickyPointOffset)
         if animated {
             UIView.animate(withDuration: 0.3) { [weak self] in
                 self?.view.layoutIfNeeded()
@@ -388,6 +390,11 @@ extension UIViewController {
         }
     }
     
+    /**
+     Adds the specified pull up view controller as a child of the current view controller.
+     - parameter pullUpController: the pull up controller to remove as a child from the current view controller.
+     - parameter animated: Pass true to animate the removing; otherwise, pass false.
+     */
     open func removePullUpController(_ pullUpController: PullUpController, animated: Bool) {
         pullUpController.pullUpControllerMoveToVisiblePoint(0, animated: animated) {
             pullUpController.willMove(toParentViewController: nil)
