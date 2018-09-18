@@ -377,7 +377,7 @@ extension UIViewController {
      */
     open func addPullUpController(_ pullUpController: PullUpController, animated: Bool) {
         assert(!(self is UITableViewController), "It's not possible to attach a PullUpController to a UITableViewController. Check this issue for more information: https://github.com/MarioIannotta/PullUpController/issues/14")
-        addChildViewController(pullUpController)
+        addChild(pullUpController)
         pullUpController.setupView(superview: view)
         if animated {
             UIView.animate(withDuration: 0.3) { [weak self] in
@@ -390,9 +390,9 @@ extension UIViewController {
     
     open func removePullUpController(_ pullUpController: PullUpController, animated: Bool) {
         pullUpController.pullUpControllerMoveToVisiblePoint(0, animated: animated) {
-            pullUpController.willMove(toParentViewController: nil)
+            pullUpController.willMove(toParent: nil)
             pullUpController.view.removeFromSuperview()
-            pullUpController.removeFromParentViewController()
+            pullUpController.removeFromParent()
         }
     }
     
