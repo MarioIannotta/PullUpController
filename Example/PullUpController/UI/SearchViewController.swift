@@ -12,6 +12,13 @@ import PullUpController
 
 class SearchViewController: PullUpController {
     
+    enum InitialState {
+        case contracted
+        case expanded
+    }
+    
+    var initialState: InitialState = .contracted
+    
     // MARK: - IBOutlets
     
     @IBOutlet private weak var visualEffectView: UIVisualEffectView!
@@ -24,6 +31,15 @@ class SearchViewController: PullUpController {
     @IBOutlet private weak var firstPreviewView: UIView!
     @IBOutlet private weak var secondPreviewView: UIView!
     @IBOutlet private weak var tableView: UITableView!
+    
+    var initialPointOffset: CGFloat {
+        switch initialState {
+        case .contracted:
+            return searchBoxContainerView?.frame.height ?? 0
+        case .expanded:
+            return pullUpControllerPreferredSize.height
+        }
+    }
 
     private var locations = [(title: String, location: CLLocationCoordinate2D)]()
     
@@ -92,12 +108,13 @@ class SearchViewController: PullUpController {
         return landscapeFrame
     }
     
-    override var pullUpControllerPreviewOffset: CGFloat {
-        return searchBoxContainerView.frame.height
-    }
-    
     override var pullUpControllerMiddleStickyPoints: [CGFloat] {
-        return [firstPreviewView.frame.maxY]
+        switch initialState {
+        case .contracted:
+            return [firstPreviewView.frame.maxY]
+        case .expanded:
+            return [searchBoxContainerView.frame.maxY, firstPreviewView.frame.maxY]
+        }
     }
     
     override var pullUpControllerIsBouncingEnabled: Bool {

@@ -19,17 +19,19 @@ class MapViewController: UIViewController {
     }
     @IBOutlet private weak var widthSlider: UISlider!
     @IBOutlet private weak var heightSlider: UISlider!
+    @IBOutlet private weak var initialStateSegmentedControl: UISegmentedControl!
     
     private func makeSearchViewControllerIfNeeded() -> SearchViewController {
         let currentPullUpController = childViewControllers
             .filter({ $0 is SearchViewController })
             .first as? SearchViewController
-        if let currentPullUpController = currentPullUpController {
-            return currentPullUpController
+        let pullUpController: SearchViewController = currentPullUpController ?? UIStoryboard(name: "Main",bundle: nil).instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
+        if initialStateSegmentedControl.selectedSegmentIndex == 0 {
+            pullUpController.initialState = .contracted
         } else {
-            return UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
+            pullUpController.initialState = .expanded
         }
+        return pullUpController
     }
     
     override func viewDidLoad() {
@@ -45,7 +47,10 @@ class MapViewController: UIViewController {
     
     private func addPullUpController() {
         let pullUpController = makeSearchViewControllerIfNeeded()
-        addPullUpController(pullUpController, animated: true)
+        _ = pullUpController.view // call pullUpController.viewDidLoad()
+        addPullUpController(pullUpController,
+                            initialStickyPointOffset: pullUpController.initialPointOffset,
+                            animated: true)
     }
     
     func zoom(to location: CLLocationCoordinate2D) {
