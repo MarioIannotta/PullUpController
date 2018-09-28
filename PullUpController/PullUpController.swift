@@ -184,7 +184,7 @@ open class PullUpController: UIViewController {
         
         setupPanGestureRecognizer()
         setupConstraints()
-        refreshConstraints(newSize: view.frame.size)
+        refreshConstraints(newSize: superview.frame.size)
     }
     
     private func setupPanGestureRecognizer() {
