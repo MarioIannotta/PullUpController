@@ -223,13 +223,13 @@ open class PullUpController: UIViewController {
     
     private func nearestStickyPointY(yVelocity: CGFloat) -> CGFloat {
         var currentStickyPointIndex = self.currentStickyPointIndex
-        if abs(yVelocity) > 700 { // 1000 points/sec = "fast" scroll
-            if yVelocity > 0 {
-                currentStickyPointIndex = max(currentStickyPointIndex - 1, 0)
-            } else {
-                currentStickyPointIndex = min(currentStickyPointIndex + 1, pullUpControllerAllStickyPoints.count - 1)
-            }
-        }
+//        if abs(yVelocity) > 700 { // 1000 points/sec = "fast" scroll
+//            if yVelocity > 0 {
+//                currentStickyPointIndex = max(currentStickyPointIndex - 1, 0)
+//            } else {
+//                currentStickyPointIndex = min(currentStickyPointIndex + 1, pullUpControllerAllStickyPoints.count - 1)
+//            }
+//        }
         
         willMoveToStickyPoint?(pullUpControllerAllStickyPoints[currentStickyPointIndex])
         return (parent?.view.frame.height ?? 0) - pullUpControllerAllStickyPoints[currentStickyPointIndex]
@@ -379,7 +379,8 @@ extension UIViewController {
                                   initialStickyPointOffset: CGFloat,
                                   animated: Bool) {
         assert(!(self is UITableViewController), "It's not possible to attach a PullUpController to a UITableViewController. Check this issue for more information: https://github.com/MarioIannotta/PullUpController/issues/14")
-        addChild(pullUpController)
+//        addChild(pullUpController)
+        addChildViewController(pullUpController)
         pullUpController.setup(superview: view, initialStickyPointOffset: initialStickyPointOffset)
         if animated {
             UIView.animate(withDuration: 0.3) { [weak self] in
@@ -397,9 +398,11 @@ extension UIViewController {
      */
     open func removePullUpController(_ pullUpController: PullUpController, animated: Bool) {
         pullUpController.pullUpControllerMoveToVisiblePoint(0, animated: animated) {
-            pullUpController.willMove(toParent: nil)
+//            pullUpController.willMove(toParent: nil)
+            pullUpController.willMove(toParentViewController: nil)
             pullUpController.view.removeFromSuperview()
-            pullUpController.removeFromParent()
+//            pullUpController.removeFromParent()
+            pullUpController.removeFromParentViewController()
         }
     }
     
