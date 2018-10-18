@@ -104,7 +104,7 @@ class SearchViewController: UIViewController, PullUpController {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if isPullUpController, let lastStickyPoint = pullUpControllerMiddleStickyPoints.last {
+        if let lastStickyPoint = pullUpControllerMiddleStickyPoints.last {
             pullUpControllerMoveToVisiblePoint(lastStickyPoint, animated: true, completion: nil)
         }
     }
@@ -137,7 +137,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         view.endEditing(true)
-        if isPullUpController, let stickyPoint = pullUpControllerMiddleStickyPoints.first {
+        if let stickyPoint = pullUpControllerMiddleStickyPoints.first {
             pullUpControllerMoveToVisiblePoint(stickyPoint, animated: true, completion: nil)
         }
         
