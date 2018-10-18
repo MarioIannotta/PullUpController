@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import PullUpController
 
-class SearchViewController: PullUpController {
+class SearchViewController: UIViewController, PullUpController {
     
     enum InitialState {
         case contracted
@@ -30,47 +30,18 @@ class SearchViewController: PullUpController {
     }
     @IBOutlet private weak var firstPreviewView: UIView!
     @IBOutlet private weak var secondPreviewView: UIView!
-    @IBOutlet private weak var tableView: UITableView!
     
-    var initialPointOffset: CGFloat {
-        switch initialState {
-        case .contracted:
-            return searchBoxContainerView?.frame.height ?? 0
-        case .expanded:
-            return pullUpControllerPreferredSize.height
-        }
-    }
-
     private var locations = [(title: String, location: CLLocationCoordinate2D)]()
     
-    public var portraitSize: CGSize = .zero
-    public var landscapeFrame: CGRect = .zero
+    @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        portraitSize = CGSize(width: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height),
-                              height: secondPreviewView.frame.maxY)
-        landscapeFrame = CGRect(x: 5, y: 50, width: 280, height: 300)
-        
-        tableView.attach(to: self)
         setupDataSource()
-        
-        willMoveToStickyPoint = { point in
-            print("willMoveToStickyPoint \(point)")
-        }
-
-        didMoveToStickyPoint = { point in
-            print("didMoveToStickyPoint \(point)")
-        }
-        
-        onDrag = { point in
-            print("onDrag: \(point)")
-        }
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -100,15 +71,21 @@ class SearchViewController: PullUpController {
     
     // MARK: - PullUpController
     
-    override var pullUpControllerPreferredSize: CGSize {
-        return portraitSize
+    var initialPointOffset: CGFloat {
+        switch initialState {
+        case .contracted:
+            return searchBoxContainerView?.frame.height ?? 0
+        case .expanded:
+            return CGSize(width: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height),
+                          height: secondPreviewView.frame.maxY).height
+        }
     }
     
-    override var pullUpControllerPreferredLandscapeFrame: CGRect {
-        return landscapeFrame
+    var portraitHeight: CGFloat {
+        return secondPreviewView.frame.maxY
     }
     
-    override var pullUpControllerMiddleStickyPoints: [CGFloat] {
+    var pullUpControllerMiddleStickyPoints: [CGFloat] {
         switch initialState {
         case .contracted:
             return [firstPreviewView.frame.maxY]
@@ -117,10 +94,9 @@ class SearchViewController: PullUpController {
         }
     }
     
-    override var pullUpControllerIsBouncingEnabled: Bool {
-        return false
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        pullUpViewWillTransition(to: size, with: coordinator)
     }
-    
 }
 
 // MARK: - UISearchBarDelegate
@@ -128,7 +104,7 @@ class SearchViewController: PullUpController {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if let lastStickyPoint = pullUpControllerAllStickyPoints.last {
+        if isPullUpController, let lastStickyPoint = pullUpControllerMiddleStickyPoints.last {
             pullUpControllerMoveToVisiblePoint(lastStickyPoint, animated: true, completion: nil)
         }
     }
@@ -161,7 +137,9 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         view.endEditing(true)
-        pullUpControllerMoveToVisiblePoint(pullUpControllerMiddleStickyPoints[0], animated: true, completion: nil)
+        if isPullUpController, let stickyPoint = pullUpControllerMiddleStickyPoints.first {
+            pullUpControllerMoveToVisiblePoint(stickyPoint, animated: true, completion: nil)
+        }
         
         (parent as? MapViewController)?.zoom(to: locations[indexPath.row].location)
     }
