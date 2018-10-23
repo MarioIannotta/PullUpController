@@ -59,6 +59,14 @@ open class PullUpController: UIViewController {
         return []
     }
     
+    open var pullUpControllerCanGoFullscreen: Bool {
+        return true;
+    }
+    
+    open var pullUpControllerCanHide: Bool {
+        return true;
+    }
+    
     /**
      A Boolean value that determines whether bouncing occurs when scrolling reaches the end of the pull up controller's view size.
      The default value is false.
@@ -74,7 +82,8 @@ open class PullUpController: UIViewController {
      At the end of the gesture the pull up controller will scroll at the nearest point in the list.
      */
     public final var pullUpControllerAllStickyPoints: [CGFloat] {
-        var sc_allStickyPoints = [initialStickyPointOffset, pullUpControllerPreferredSize.height].compactMap { $0 }
+        var sc_allStickyPoints = [pullUpControllerCanHide ? initialStickyPointOffset : nil,
+                                  pullUpControllerCanGoFullscreen ? pullUpControllerPreferredSize.height : nil].compactMap { $0 }
         sc_allStickyPoints.append(contentsOf: pullUpControllerMiddleStickyPoints)
         return sc_allStickyPoints.sorted()
     }
@@ -223,13 +232,13 @@ open class PullUpController: UIViewController {
     
     private func nearestStickyPointY(yVelocity: CGFloat) -> CGFloat {
         var currentStickyPointIndex = self.currentStickyPointIndex
-//        if abs(yVelocity) > 700 { // 1000 points/sec = "fast" scroll
-//            if yVelocity > 0 {
-//                currentStickyPointIndex = max(currentStickyPointIndex - 1, 0)
-//            } else {
-//                currentStickyPointIndex = min(currentStickyPointIndex + 1, pullUpControllerAllStickyPoints.count - 1)
-//            }
-//        }
+        if abs(yVelocity) > 1200 { // 1000 points/sec = "fast" scroll
+            if yVelocity > 0 {
+                currentStickyPointIndex = max(currentStickyPointIndex - 1, 0)
+            } else {
+                currentStickyPointIndex = min(currentStickyPointIndex + 1, pullUpControllerAllStickyPoints.count - 1)
+            }
+        }
         
         willMoveToStickyPoint?(pullUpControllerAllStickyPoints[currentStickyPointIndex])
         return (parent?.view.frame.height ?? 0) - pullUpControllerAllStickyPoints[currentStickyPointIndex]
