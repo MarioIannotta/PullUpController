@@ -59,14 +59,27 @@ open class PullUpController: UIViewController {
         return []
     }
     
+    /**
+     Determines if this pull up controller can go fullscreen
+     */
     open var pullUpControllerCanGoFullscreen: Bool {
         return true;
     }
     
+    /**
+     Determines if this pull up controller can fully hide below the screen
+     */
     open var pullUpControllerCanHide: Bool {
         return true;
     }
     
+    /**
+     The Y-velocity for pan events
+     */
+    open var pullUpControllerVelocityY: CGFloat {
+        return 700;
+    }   
+        
     /**
      A Boolean value that determines whether bouncing occurs when scrolling reaches the end of the pull up controller's view size.
      The default value is false.
@@ -232,7 +245,7 @@ open class PullUpController: UIViewController {
     
     private func nearestStickyPointY(yVelocity: CGFloat) -> CGFloat {
         var currentStickyPointIndex = self.currentStickyPointIndex
-        if abs(yVelocity) > 1200 { // 1000 points/sec = "fast" scroll
+        if abs(yVelocity) > pullUpControllerVelocityY { // 1000 points/sec = "fast" scroll
             if yVelocity > 0 {
                 currentStickyPointIndex = max(currentStickyPointIndex - 1, 0)
             } else {
