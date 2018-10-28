@@ -118,7 +118,7 @@ class SearchViewController: PullUpController {
     }
     
     override var pullUpControllerIsBouncingEnabled: Bool {
-        return false
+        return true
     }
     
 }

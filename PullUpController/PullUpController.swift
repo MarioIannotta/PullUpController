@@ -81,6 +81,7 @@ open class PullUpController: UIViewController {
     
     private var leftConstraint: NSLayoutConstraint?
     private var topConstraint: NSLayoutConstraint?
+    private var bottomConstraint: NSLayoutConstraint?
     private var widthConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
     private var panGestureRecognizer: UIPanGestureRecognizer?
@@ -198,12 +199,19 @@ open class PullUpController: UIViewController {
             let parentView = parent?.view
             else { return }
         
-        topConstraint = view.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 0)
-        leftConstraint = view.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 0)
+        topConstraint = view.topAnchor.constraint(equalTo: parentView.topAnchor)
+        leftConstraint = view.leftAnchor.constraint(equalTo: parentView.leftAnchor)
         widthConstraint = view.widthAnchor.constraint(equalToConstant: pullUpControllerPreferredSize.width)
         heightConstraint = view.heightAnchor.constraint(equalToConstant: pullUpControllerPreferredSize.height)
+        heightConstraint?.priority = .defaultLow
+        bottomConstraint = parentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         
-        NSLayoutConstraint.activate([topConstraint, leftConstraint, widthConstraint, heightConstraint].compactMap { $0 })
+        let constraintsToActivate = [topConstraint,
+                                     leftConstraint,
+                                     widthConstraint,
+                                     heightConstraint,
+                                     bottomConstraint].compactMap { $0 }
+        NSLayoutConstraint.activate(constraintsToActivate)
     }
     
     private func refreshConstraints(newSize: CGSize, customTopOffset: CGFloat? = nil) {
@@ -347,13 +355,21 @@ open class PullUpController: UIViewController {
         leftConstraint?.constant = (parentViewSize.width - min(pullUpControllerPreferredSize.width, parentViewSize.width))/2
         widthConstraint?.constant = pullUpControllerPreferredSize.width
         heightConstraint?.constant = pullUpControllerPreferredSize.height
+        heightConstraint?.priority = .defaultLow
+        bottomConstraint?.constant = 0
     }
     
     private func setLandscapeConstraints() {
-        topConstraint?.constant = pullUpControllerPreferredLandscapeFrame.origin.y
-        leftConstraint?.constant = pullUpControllerPreferredLandscapeFrame.origin.x
-        widthConstraint?.constant = pullUpControllerPreferredLandscapeFrame.width
-        heightConstraint?.constant = pullUpControllerPreferredLandscapeFrame.height
+        guard
+            let parentViewHeight = parent?.view.frame.height
+            else { return }
+        let landscapeFrame = pullUpControllerPreferredLandscapeFrame
+        topConstraint?.constant = landscapeFrame.origin.y
+        leftConstraint?.constant = landscapeFrame.origin.x
+        widthConstraint?.constant = landscapeFrame.width
+        heightConstraint?.constant = landscapeFrame.height
+        heightConstraint?.priority = .defaultHigh
+        bottomConstraint?.constant = parentViewHeight - landscapeFrame.height - landscapeFrame.origin.y
     }
     
 }
