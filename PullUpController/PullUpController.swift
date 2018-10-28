@@ -96,6 +96,12 @@ open class PullUpController: UIViewController {
     
     private var initialInternalScrollViewContentOffset: CGPoint = .zero
     private var initialStickyPointOffset: CGFloat?
+    private var currentStickyPointIndex: Int {
+        let stickyPointTreshold = (self.parent?.view.frame.height ?? 0) - (topConstraint?.constant ?? 0)
+        let stickyPointsLessCurrentPosition = pullUpControllerAllStickyPoints.map { abs($0 - stickyPointTreshold) }
+        guard let minStickyPointDifference = stickyPointsLessCurrentPosition.min() else { return 0 }
+        return stickyPointsLessCurrentPosition.index(of: minStickyPointDifference) ?? 0
+    }
     
     // MARK: - Open methods
     
@@ -144,7 +150,6 @@ open class PullUpController: UIViewController {
             self?.view.layoutIfNeeded()
         }
     }
-    
     
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         let isNewSizePortrait = size.height > size.width
@@ -220,13 +225,6 @@ open class PullUpController: UIViewController {
         } else {
             setLandscapeConstraints()
         }
-    }
-    
-    private var currentStickyPointIndex: Int {
-        let stickyPointTreshold = (self.parent?.view.frame.height ?? 0) - (topConstraint?.constant ?? 0)
-        let stickyPointsLessCurrentPosition = pullUpControllerAllStickyPoints.map { abs($0 - stickyPointTreshold) }
-        guard let minStickyPointDifference = stickyPointsLessCurrentPosition.min() else { return 0 }
-        return stickyPointsLessCurrentPosition.index(of: minStickyPointDifference) ?? 0
     }
     
     private func nearestStickyPointY(yVelocity: CGFloat) -> CGFloat {
