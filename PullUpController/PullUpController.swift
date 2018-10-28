@@ -120,7 +120,7 @@ open class PullUpController: UIViewController {
         topConstraint?.constant = (parent?.view.frame.height ?? 0) - visiblePoint
         
         if animated {
-            UIView.animate(
+            pullUpControllerAnimate(
                 withDuration: 0.3,
                 animations: { [weak self] in
                     self?.parent?.view?.layoutIfNeeded()
@@ -146,9 +146,26 @@ open class PullUpController: UIViewController {
         refreshConstraints(newSize: parentView.frame.size,
                            customTopOffset: parentView.frame.size.height - (pullUpControllerAllStickyPoints.first ?? 0))
         
-        UIView.animate(withDuration: animated ? 0.3 : 0) { [weak self] in
-            self?.view.layoutIfNeeded()
-        }
+        pullUpControllerAnimate(
+            withDuration: animated ? 0.3 : 0,
+            animations: { [weak self] in
+                self?.view.layoutIfNeeded()
+            },
+            completion: nil)
+    }
+    
+    /**
+     This method will be called when an animation needs to be performed.
+     You can consider override this method and customize the animation using the method
+     `UIView.animate(withDuration:, delay:, usingSpringWithDamping:, initialSpringVelocity:, options:, animations:, completion:)`
+     - parameter duration: The total duration of the animations, measured in seconds. If you specify a negative value or 0, the changes are made without animating them.
+     - parameter animations: A block object containing the changes to commit to the views.
+     - parameter completion: A block object to be executed when the animation sequence ends.
+    */
+    open func pullUpControllerAnimate(withDuration duration: TimeInterval,
+                                      animations: @escaping () -> Void,
+                                      completion: ((Bool) -> Void)?) {
+        UIView.animate(withDuration: duration, animations: animations, completion: completion)
     }
     
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -332,7 +349,7 @@ open class PullUpController: UIViewController {
         topConstraint?.constant = value
         onDrag?(value)
         
-        UIView.animate(
+        pullUpControllerAnimate(
             withDuration: animationDuration ?? 0,
             animations: { [weak self] in
                 self?.parent?.view.layoutIfNeeded()
@@ -396,9 +413,12 @@ extension UIViewController {
         addChild(pullUpController)
         pullUpController.setup(superview: view, initialStickyPointOffset: initialStickyPointOffset)
         if animated {
-            UIView.animate(withDuration: 0.3) { [weak self] in
-                self?.view.layoutIfNeeded()
-            }
+            pullUpController.pullUpControllerAnimate(
+                withDuration: 0.3,
+                animations: { [weak self] in
+                    self?.view.layoutIfNeeded()
+                },
+                completion: nil)
         } else {
             view.layoutIfNeeded()
         }

@@ -121,6 +121,18 @@ class SearchViewController: PullUpController {
         return true
     }
     
+    override func pullUpControllerAnimate(withDuration duration: TimeInterval,
+                                          animations: @escaping () -> Void,
+                                          completion: ((Bool) -> Void)?) {
+        UIView.animate(withDuration: 0.3,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0,
+                       options: .curveEaseInOut,
+                       animations: animations,
+                       completion: completion)
+    }
+    
 }
 
 // MARK: - UISearchBarDelegate
