@@ -117,8 +117,8 @@ class SearchViewController: PullUpController {
         }
     }
     
-    override var pullUpControllerIsBouncingEnabled: Bool {
-        return true
+    override var pullUpControllerBounceOffset: CGFloat {
+        return 20
     }
     
     override func pullUpControllerAnimate(withDuration duration: TimeInterval,
