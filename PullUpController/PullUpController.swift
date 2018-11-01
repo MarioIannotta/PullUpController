@@ -255,7 +255,6 @@ open class PullUpController: UIViewController {
             }
         }
         
-        willMoveToStickyPoint?(pullUpControllerAllStickyPoints[currentStickyPointIndex])
         return (parent?.view.frame.height ?? 0) - pullUpControllerAllStickyPoints[currentStickyPointIndex]
     }
     
@@ -356,17 +355,27 @@ open class PullUpController: UIViewController {
             value = max(value, parentViewHeight - lastStickyPoint - pullUpControllerBounceOffset)
             value = min(value, parentViewHeight - firstStickyPoint + pullUpControllerBounceOffset)
         }
+        let targetPoint = parentViewHeight - value
+        /*
+         `willMoveToStickyPoint` and `didMoveToStickyPoint` should be
+         called only if the user has ended the gesture
+         */
+        let shouldNotifyObserver = animationDuration != nil
         topConstraint?.constant = value
         onDrag?(value)
          
+        if shouldNotifyObserver {
+            willMoveToStickyPoint?(targetPoint)
+        }
         pullUpControllerAnimate(
             withDuration: animationDuration ?? 0,
             animations: { [weak self] in
                 self?.parent?.view.layoutIfNeeded()
             },
             completion: { [weak self] _ in
-                let point = (self?.parent?.view.frame.height ?? 0.0) - (self?.topConstraint?.constant ?? 0.0)
-                self?.didMoveToStickyPoint?(point)
+                if shouldNotifyObserver {
+                    self?.didMoveToStickyPoint?(targetPoint)
+                }
             }
         )
     }
