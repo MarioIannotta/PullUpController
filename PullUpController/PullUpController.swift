@@ -67,6 +67,17 @@ open class PullUpController: UIViewController {
         return 0
     }
     
+    /**
+     A CGFloat value that represent the current point, expressed in the pull up controller coordinate system,
+     where the pull up controller's view is positioned.
+     */
+    open var pullUpControllerCurrentPointOffset: CGFloat {
+        guard
+            let parentViewHeight = parent?.view.frame.height
+            else { return 0 }
+        return parentViewHeight - (topConstraint?.constant ?? 0)
+    }
+    
     // MARK: - Public properties
     
     /**
