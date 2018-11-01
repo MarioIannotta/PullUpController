@@ -115,23 +115,20 @@ open class PullUpController: UIViewController {
      */
     open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, animated: Bool, completion: (() -> Void)?) {
         guard
-            isPortrait
+            isPortrait,
+            let parentViewHeight = parent?.view.frame.height
             else { return }
-        topConstraint?.constant = (parent?.view.frame.height ?? 0) - visiblePoint
-        
-        if animated {
-            pullUpControllerAnimate(
-                withDuration: 0.3,
-                animations: { [weak self] in
-                    self?.parent?.view?.layoutIfNeeded()
-                },
-                completion: { _ in
-                    completion?()
-                })
-        } else {
-            parent?.view?.layoutIfNeeded()
-            completion?()
-        }
+        topConstraint?.constant = parentViewHeight - visiblePoint
+        willMoveToStickyPoint?(visiblePoint)
+        pullUpControllerAnimate(
+            withDuration: animated ? 0.3 : 0,
+            animations: { [weak self] in
+                self?.parent?.view?.layoutIfNeeded()
+            },
+            completion: { [weak self] _ in
+                self?.didMoveToStickyPoint?(visiblePoint)
+                completion?()
+        })
     }
     
     /**
