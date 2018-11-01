@@ -362,8 +362,7 @@ open class PullUpController: UIViewController {
          */
         let shouldNotifyObserver = animationDuration != nil
         topConstraint?.constant = value
-        onDrag?(value)
-         
+        onDrag?(targetPoint)
         if shouldNotifyObserver {
             willMoveToStickyPoint?(targetPoint)
         }
