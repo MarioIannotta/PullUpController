@@ -246,6 +246,7 @@ open class PullUpController: UIViewController {
     
     private func nearestStickyPointY(yVelocity: CGFloat) -> CGFloat {
         var currentStickyPointIndex = self.currentStickyPointIndex
+        // TODO: - allow this property to be customized
         if abs(yVelocity) > 700 { // 1000 points/sec = "fast" scroll
             if yVelocity > 0 {
                 currentStickyPointIndex = max(currentStickyPointIndex - 1, 0)
@@ -315,6 +316,8 @@ open class PullUpController: UIViewController {
                     }
                     initialInternalScrollViewContentOffset = .zero
                 } else {
+                    // If the user is scrolling "fast" disable the interna scroll view scroll
+                    // TODO: - allow this property to be customized
                     if abs(scrollViewPanVelocity) > 1000 {
                         scrollView.isScrollEnabled = false
                     }
