@@ -60,11 +60,11 @@ open class PullUpController: UIViewController {
     }
     
     /**
-     A Boolean value that determines whether bouncing occurs when scrolling reaches the end of the pull up controller's view size.
-     The default value is false.
+     A CGFloat value that determines how much the pull up controller's view can bounce outside it's size.
+     The default value is 0 and that means the the view cannot expand beyond its size.
      */
-    open var pullUpControllerIsBouncingEnabled: Bool {
-        return false
+    open var pullUpControllerBounceOffset: CGFloat {
+        return 0
     }
     
     // MARK: - Public properties
@@ -309,18 +309,26 @@ open class PullUpController: UIViewController {
                 // disable the bounces when the user is able to drag the view through the internal scroll view
                 scrollView.bounces = false
                 if isScrollingDown {
-                    // take the initial internal scroll view content offset into account when scrolling down
-                    yTranslation -= initialInternalScrollViewContentOffset.y
+                    if pullUpControllerBounceOffset <= 0 {
+                        // take the initial internal scroll view content offset into account when scrolling down is the bouncing is not enabled
+                        yTranslation -= initialInternalScrollViewContentOffset.y
+                    }
                     initialInternalScrollViewContentOffset = .zero
                 } else {
-                    // keep the initial internal scroll view content offset when scrolling up
-                    internalScrollView?.contentOffset = initialInternalScrollViewContentOffset
+                    if abs(scrollViewPanVelocity) > 1000 {
+                        scrollView.isScrollEnabled = false
+                    }
+                    if topConstraint.constant > parentViewHeight - lastStickyPoint - pullUpControllerBounceOffset {
+                        // keep the initial internal scroll view content offset when scrolling up
+                        internalScrollView?.contentOffset = initialInternalScrollViewContentOffset
+                    }
                 }
             }
             setTopOffset(topConstraint.constant + yTranslation)
             
         case .ended:
             internalScrollView?.bounces = true
+            internalScrollView?.isScrollEnabled = true
             guard
                 shouldDragView
                 else { return }
@@ -340,15 +348,14 @@ open class PullUpController: UIViewController {
             let parentViewHeight = parent?.view.frame.height
             else { return }
         var value = value
-        if !pullUpControllerIsBouncingEnabled,
-            let firstStickyPoint = pullUpControllerAllStickyPoints.first,
+        if  let firstStickyPoint = pullUpControllerAllStickyPoints.first,
             let lastStickyPoint = pullUpControllerAllStickyPoints.last {
-            value = max(value, parentViewHeight - lastStickyPoint)
-            value = min(value, parentViewHeight - firstStickyPoint)
+            value = max(value, parentViewHeight - lastStickyPoint - pullUpControllerBounceOffset)
+            value = min(value, parentViewHeight - firstStickyPoint + pullUpControllerBounceOffset)
         }
         topConstraint?.constant = value
         onDrag?(value)
-        
+         
         pullUpControllerAnimate(
             withDuration: animationDuration ?? 0,
             animations: { [weak self] in
@@ -412,16 +419,12 @@ extension UIViewController {
         assert(!(self is UITableViewController), "It's not possible to attach a PullUpController to a UITableViewController. Check this issue for more information: https://github.com/MarioIannotta/PullUpController/issues/14")
         addChild(pullUpController)
         pullUpController.setup(superview: view, initialStickyPointOffset: initialStickyPointOffset)
-        if animated {
-            pullUpController.pullUpControllerAnimate(
-                withDuration: 0.3,
-                animations: { [weak self] in
-                    self?.view.layoutIfNeeded()
-                },
-                completion: nil)
-        } else {
-            view.layoutIfNeeded()
-        }
+        pullUpController.pullUpControllerAnimate(
+            withDuration: animated ? 0.3 : 0,
+            animations: { [weak self] in
+                self?.view.layoutIfNeeded()
+            },
+            completion: nil)
     }
     
     /**
