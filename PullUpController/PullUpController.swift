@@ -215,10 +215,10 @@ open class PullUpController: UIViewController {
     }
     
     private func setupPanGestureRecognizer() {
+        internalScrollView?.panGestureRecognizer.addTarget(self, action: #selector(handleScrollViewGestureRecognizer(_:)))
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGestureRecognizer(_:)))
         panGestureRecognizer?.minimumNumberOfTouches = 1
         panGestureRecognizer?.maximumNumberOfTouches = 1
-        panGestureRecognizer?.delegate = self
         if let panGestureRecognizer = panGestureRecognizer {
             view.addGestureRecognizer(panGestureRecognizer)
         }
@@ -266,91 +266,90 @@ open class PullUpController: UIViewController {
         return (parent?.view.frame.height ?? 0) - pullUpControllerAllStickyPoints[currentStickyPointIndex]
     }
     
-    @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc private func handleScrollViewGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
         guard
             isPortrait,
+            let scrollView = internalScrollView,
             let topConstraint = topConstraint,
             let lastStickyPoint = pullUpControllerAllStickyPoints.last,
-            let parentView = parent?.view
+            let parentViewHeight = parent?.view.bounds.height
             else { return }
         
-        let parentViewHeight = parentView.frame.height
-        var yTranslation = gestureRecognizer.translation(in: parentView).y
-        gestureRecognizer.setTranslation(.zero, in: view)
-        
-        let scrollViewPanVelocity = internalScrollView?.panGestureRecognizer.velocity(in: parentView).y ?? 0
-        let isScrollingDown = scrollViewPanVelocity > 0
+        let isFullOpened = topConstraint.constant <= parentViewHeight - lastStickyPoint
+        let yTranslation = gestureRecognizer.translation(in: scrollView).y
+        let isScrollingDown = gestureRecognizer.velocity(in: scrollView).y > 0
         
         /**
-         A Boolean value that controls whether the scroll view scroll should pan the parent view up **or** down.
-         
-         1. The user should be able to drag the view down through the internal scroll view when
-            - the scroll direction is down (`isScrollingDown`)
-            - the internal scroll view is scrolled to the top (`scrollView.contentOffset.y <= 0`)
-         
-         2. The user should be able to drag the view up through the internal scroll view when
-            - the scroll direction is up (`!isScrollingDown`)
-            - the PullUpController's view is fully opened. (`topConstraint.constant != parentViewHeight - lastStickyPoint`)
+         The user should be able to drag the view down through the internal scroll view when
+         - the scroll direction is down (`isScrollingDown`)
+         - the internal scroll view is scrolled to the top (`scrollView.contentOffset.y <= 0`)
          */
-        let shouldDragView: Bool = {
-            // Condition 1
-            let shouldDragViewDown = isScrollingDown && internalScrollView?.contentOffset.y ?? 0 <= 0
-            // Condition 2
-            let shouldDragViewUp = !isScrollingDown && topConstraint.constant != parentViewHeight - lastStickyPoint
-            return shouldDragViewDown || shouldDragViewUp
-        }()
+        let shouldDragViewDown = isScrollingDown && scrollView.contentOffset.y <= 0
+        
+        /**
+         The user should be able to drag the view up through the internal scroll view when
+         - the scroll direction is up (`!isScrollingDown`)
+         - the PullUpController's view is fully opened. (`topConstraint.constant <= parentViewHeight - lastStickyPoint`)
+         */
+        let shouldDragViewUp = !isScrollingDown && !isFullOpened
+        let shouldDragView = shouldDragViewDown || shouldDragViewUp
+        
+        if shouldDragViewUp {
+            scrollView.setContentOffset(.zero, animated: false)
+        }
         
         switch gestureRecognizer.state {
         case .began:
-            initialInternalScrollViewContentOffset = internalScrollView?.contentOffset ?? .zero
+            initialInternalScrollViewContentOffset = scrollView.contentOffset
             
         case .changed:
-            // the user is scrolling the internal scroll view
-            if scrollViewPanVelocity != 0, let scrollView = internalScrollView {
-                // if the user shouldn't be able to drag the view up through the internal scroll view reset the translation
-                guard
-                    shouldDragView
-                    else {
-                        yTranslation = 0
-                        return
-                    }
-                // disable the bounces when the user is able to drag the view through the internal scroll view
-                scrollView.bounces = false
-                if isScrollingDown {
-                    if pullUpControllerBounceOffset <= 0 {
-                        // take the initial internal scroll view content offset into account when scrolling down is the bouncing is not enabled
-                        yTranslation -= initialInternalScrollViewContentOffset.y
-                    }
-                    initialInternalScrollViewContentOffset = .zero
-                } else {
-                    // If the user is scrolling "fast" disable the interna scroll view scroll
-                    // TODO: - allow this property to be customized
-                    if abs(scrollViewPanVelocity) > 1000 {
-                        scrollView.isScrollEnabled = false
-                    }
-                    if topConstraint.constant > parentViewHeight - lastStickyPoint - pullUpControllerBounceOffset {
-                        // keep the initial internal scroll view content offset when scrolling up
-                        internalScrollView?.contentOffset = initialInternalScrollViewContentOffset
-                    }
-                }
-            }
-            setTopOffset(topConstraint.constant + yTranslation)
-            
-        case .ended:
-            internalScrollView?.bounces = true
-            internalScrollView?.isScrollEnabled = true
             guard
                 shouldDragView
-                else { return }
-            let yVelocity = gestureRecognizer.velocity(in: view).y // v = px/s
-            let targetTopOffset = nearestStickyPointY(yVelocity: yVelocity)
-            let distanceToConver = topConstraint.constant - targetTopOffset // px
-            let animationDuration = max(0.08, min(0.3, TimeInterval(abs(distanceToConver/yVelocity)))) // s = px/v
-            setTopOffset(targetTopOffset, animationDuration: animationDuration)
+                else { break }
+            scrollView.bounces = false
+            setTopOffset(topConstraint.constant + yTranslation - initialInternalScrollViewContentOffset.y)
+            gestureRecognizer.setTranslation(initialInternalScrollViewContentOffset, in: scrollView)
+            
+        case .ended:
+            scrollView.bounces = true
+            goToNearestStickyPoint(verticalVelocity: gestureRecognizer.velocity(in: view).y)
             
         default:
             break
         }
+        
+    }
+    
+    @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
+        guard
+            isPortrait,
+            let topConstraint = topConstraint
+            else { return }
+        
+        let yTranslation = gestureRecognizer.translation(in: view).y
+        
+        switch gestureRecognizer.state {
+        case .changed:
+            setTopOffset(topConstraint.constant + yTranslation)
+            gestureRecognizer.setTranslation(.zero, in: view)
+            
+        case .ended:
+            goToNearestStickyPoint(verticalVelocity: gestureRecognizer.velocity(in: view).y)
+            
+        default:
+            break
+        }
+    }
+    
+    private func goToNearestStickyPoint(verticalVelocity: CGFloat) {
+        guard
+            isPortrait,
+            let topConstraint = topConstraint
+            else { return }
+        let targetTopOffset = nearestStickyPointY(yVelocity: verticalVelocity)  // v = px/s
+        let distanceToConver = topConstraint.constant - targetTopOffset // px
+        let animationDuration = max(0.08, min(0.3, TimeInterval(abs(distanceToConver/verticalVelocity)))) // s = px/v
+        setTopOffset(targetTopOffset, animationDuration: animationDuration)
     }
     
     private func setTopOffset(_ value: CGFloat, animationDuration: TimeInterval? = nil) {
@@ -411,15 +410,6 @@ open class PullUpController: UIViewController {
         heightConstraint?.constant = landscapeFrame.height
         heightConstraint?.priority = .defaultHigh
         bottomConstraint?.constant = parentViewHeight - landscapeFrame.height - landscapeFrame.origin.y
-    }
-    
-}
-
-extension PullUpController: UIGestureRecognizerDelegate {
-    
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
     }
     
 }
