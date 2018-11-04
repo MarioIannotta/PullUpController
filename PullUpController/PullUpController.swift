@@ -295,6 +295,7 @@ open class PullUpController: UIViewController {
         let shouldDragView = shouldDragViewDown || shouldDragViewUp
         
         if shouldDragView {
+            scrollView.bounces = false
             scrollView.setContentOffset(.zero, animated: false)
         }
         
@@ -306,7 +307,6 @@ open class PullUpController: UIViewController {
             guard
                 shouldDragView
                 else { break }
-            scrollView.bounces = false
             setTopOffset(topConstraint.constant + yTranslation - initialInternalScrollViewContentOffset.y)
             gestureRecognizer.setTranslation(initialInternalScrollViewContentOffset, in: scrollView)
             
@@ -330,7 +330,7 @@ open class PullUpController: UIViewController {
         
         switch gestureRecognizer.state {
         case .changed:
-            setTopOffset(topConstraint.constant + yTranslation)
+            setTopOffset(topConstraint.constant + yTranslation, allowBounce: true)
             gestureRecognizer.setTranslation(.zero, in: view)
             
         case .ended:
@@ -352,16 +352,25 @@ open class PullUpController: UIViewController {
         setTopOffset(targetTopOffset, animationDuration: animationDuration)
     }
     
-    private func setTopOffset(_ value: CGFloat, animationDuration: TimeInterval? = nil) {
+    private func setTopOffset(_ value: CGFloat,
+                              animationDuration: TimeInterval? = nil,
+                              allowBounce: Bool = false) {
         guard
             let parentViewHeight = parent?.view.frame.height
             else { return }
-        var value = value
-        if  let firstStickyPoint = pullUpControllerAllStickyPoints.first,
-            let lastStickyPoint = pullUpControllerAllStickyPoints.last {
-            value = max(value, parentViewHeight - lastStickyPoint - pullUpControllerBounceOffset)
-            value = min(value, parentViewHeight - firstStickyPoint + pullUpControllerBounceOffset)
-        }
+        // Apply right value bounding for the provided bounce offset if needed
+        let value: CGFloat = {
+            guard
+                let firstStickyPoint = pullUpControllerAllStickyPoints.first,
+                let lastStickyPoint = pullUpControllerAllStickyPoints.last
+                else {
+                    return value
+                }
+            let bounceOffset = allowBounce ? pullUpControllerBounceOffset : 0
+            let minValue = parentViewHeight - lastStickyPoint - bounceOffset
+            let maxValue = parentViewHeight - firstStickyPoint + bounceOffset
+            return max(min(value, maxValue), minValue)
+        }()
         let targetPoint = parentViewHeight - value
         /*
          `willMoveToStickyPoint` and `didMoveToStickyPoint` should be
