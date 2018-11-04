@@ -294,7 +294,7 @@ open class PullUpController: UIViewController {
         let shouldDragViewUp = !isScrollingDown && !isFullOpened
         let shouldDragView = shouldDragViewDown || shouldDragViewUp
         
-        if shouldDragViewUp {
+        if shouldDragView {
             scrollView.setContentOffset(.zero, animated: false)
         }
         
