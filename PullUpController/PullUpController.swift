@@ -67,6 +67,13 @@ open class PullUpController: UIViewController {
     }
     
     /**
+     Determines if the pan gesture is enabled
+     */
+    open var panGestureEnabled: Bool {
+        return true;
+    }
+    
+    /**
      Determines if this pull up controller can fully hide below the screen
      */
     open var pullUpControllerCanHide: Bool {
@@ -264,6 +271,10 @@ open class PullUpController: UIViewController {
             let lastStickyPoint = pullUpControllerAllStickyPoints.last,
             let parentView = parent?.view
             else { return }
+        
+        if panGestureEnabled == false {
+            return
+        }
         
         let parentViewHeight = parentView.frame.height
         var yTranslation = gestureRecognizer.translation(in: parentView).y
