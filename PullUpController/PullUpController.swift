@@ -75,6 +75,14 @@ open class PullUpController: UIViewController {
         return parentViewHeight - (topConstraint?.constant ?? 0)
     }
     
+    /**
+     A CGFloat value that represent the vertical velocity threshold (expressed in points/sec) beyond wich
+     the target sticky point is skippend and the view is positioned to the next one.
+    */
+    open var pullUpControllerSkipPointVerticalVelocityThreshold: CGFloat {
+        return 700
+    }
+    
     // MARK: - Public properties
     
     /**
@@ -276,8 +284,7 @@ open class PullUpController: UIViewController {
     
     private func nearestStickyPointY(yVelocity: CGFloat) -> CGFloat {
         var currentStickyPointIndex = self.currentStickyPointIndex
-        // TODO: - allow this property to be customized
-        if abs(yVelocity) > 700 { // 1000 points/sec = "fast" scroll
+        if abs(yVelocity) > pullUpControllerSkipPointVerticalVelocityThreshold {
             if yVelocity > 0 {
                 currentStickyPointIndex = max(currentStickyPointIndex - 1, 0)
             } else {
