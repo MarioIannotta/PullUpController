@@ -28,24 +28,6 @@ open class PullUpController: UIViewController {
     // MARK: - Open properties
     
     /**
-     The closure to execute before the view controller's view move to a sticky point.
-     The target sticky point, expressed in the pull up controller coordinate system, is provided in the closure parameter.
-     */
-    open var willMoveToStickyPoint: ((_ point: CGFloat) -> Void)?
-    
-    /**
-     The closure to execute after the view controller's view move to a sticky point.
-     The sticky point, expressed in the pull up controller coordinate system, is provided in the closure parameter.
-     */
-    open var didMoveToStickyPoint: ((_ point: CGFloat) -> Void)?
-    
-    /**
-     The closure to execute when the view controller's view is dragged.
-     The point, expressed in the pull up controller parent coordinate system, is provided in the closure parameter.
-     */
-    open var onDrag: ((_ point: CGFloat) -> Void)?
-    
-    /**
      The desired size of the pull up controller’s view, in screen units.
      The default value is width: UIScreen.main.bounds.width, height: 400.
      */
@@ -132,6 +114,27 @@ open class PullUpController: UIViewController {
     // MARK: - Open methods
     
     /**
+     This method is called before the pull up controller's view move to a sticky point.
+     The default implementation of this method does nothing.
+     - parameter stickyPoint: The targer sticky point, expressed in the pull up controller coordinate system
+     */
+    open func pullUpControllerWillMove(to stickyPoint: CGFloat) { }
+    
+    /**
+     This method is called after the pull up controller's view move to a sticky point.
+     The default implementation of this method does nothing.
+     - parameter stickyPoint: The targer sticky point, expressed in the pull up controller coordinate system
+     */
+    open func pullUpControllerDidMove(to stickyPoint: CGFloat) { }
+    
+    /**
+     This method is called after the pull up controller's view is dragged to a point.
+     The default implementation of this method does nothing.
+     - parameter stickyPoint: The targer point, expressed in the pull up controller coordinate system
+     */
+    open func pullUpControllerDidDrag(to point: CGFloat) { }
+    
+    /**
      This method will move the pull up controller's view in order to show the provided visible point.
      
      You may use on of `pullUpControllerAllStickyPoints` item to provide a valid visible point.
@@ -145,7 +148,7 @@ open class PullUpController: UIViewController {
             let parentViewHeight = parent?.view.frame.height
             else { return }
         topConstraint?.constant = parentViewHeight - visiblePoint
-        willMoveToStickyPoint?(visiblePoint)
+        pullUpControllerWillMove(to: visiblePoint)
         pullUpControllerAnimate(
             action: .move,
             withDuration: animated ? 0.3 : 0,
@@ -153,7 +156,7 @@ open class PullUpController: UIViewController {
                 self?.parent?.view?.layoutIfNeeded()
             },
             completion: { [weak self] _ in
-                self?.didMoveToStickyPoint?(visiblePoint)
+                self?.pullUpControllerDidMove(to: visiblePoint)
                 completion?()
         })
     }
@@ -397,9 +400,9 @@ open class PullUpController: UIViewController {
          */
         let shouldNotifyObserver = animationDuration != nil
         topConstraint?.constant = value
-        onDrag?(targetPoint)
+        pullUpControllerDidDrag(to: targetPoint)
         if shouldNotifyObserver {
-            willMoveToStickyPoint?(targetPoint)
+            pullUpControllerWillMove(to: targetPoint)
         }
         pullUpControllerAnimate(
             action: .move,
@@ -409,7 +412,7 @@ open class PullUpController: UIViewController {
             },
             completion: { [weak self] _ in
                 if shouldNotifyObserver {
-                    self?.didMoveToStickyPoint?(targetPoint)
+                    self?.pullUpControllerDidMove(to: targetPoint)
                 }
             }
         )

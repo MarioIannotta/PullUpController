@@ -57,24 +57,24 @@ class SearchViewController: PullUpController {
         
         tableView.attach(to: self)
         setupDataSource()
-        
-        willMoveToStickyPoint = { point in
-            print("willMoveToStickyPoint \(point)")
-        }
-
-        didMoveToStickyPoint = { point in
-            print("didMoveToStickyPoint \(point)")
-        }
-        
-        onDrag = { point in
-            print("onDrag: \(point)")
-        }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         view.layer.cornerRadius = 12
+    }
+    
+    override func pullUpControllerWillMove(to stickyPoint: CGFloat) {
+        print("will move to \(stickyPoint)")
+    }
+    
+    override func pullUpControllerDidMove(to stickyPoint: CGFloat) {
+        print("did move to \(stickyPoint)")
+    }
+    
+    override func pullUpControllerDidDrag(to point: CGFloat) {
+        print("did drag to \(point)")
     }
     
     private func setupDataSource() {
@@ -121,16 +121,24 @@ class SearchViewController: PullUpController {
         return 20
     }
     
-    override func pullUpControllerAnimate(withDuration duration: TimeInterval,
+    override func pullUpControllerAnimate(action: PullUpController.Action,
+                                          withDuration duration: TimeInterval,
                                           animations: @escaping () -> Void,
                                           completion: ((Bool) -> Void)?) {
-        UIView.animate(withDuration: 0.3,
-                       delay: 0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0,
-                       options: .curveEaseInOut,
-                       animations: animations,
-                       completion: completion)
+        switch action {
+        case .move:
+            UIView.animate(withDuration: 0.3,
+                           delay: 0,
+                           usingSpringWithDamping: 0.7,
+                           initialSpringVelocity: 0,
+                           options: .curveEaseInOut,
+                           animations: animations,
+                           completion: completion)
+        default:
+            UIView.animate(withDuration: 0.3,
+                           animations: animations,
+                           completion: completion)
+        }
     }
     
 }
