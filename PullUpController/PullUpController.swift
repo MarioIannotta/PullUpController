@@ -116,21 +116,21 @@ open class PullUpController: UIViewController {
     /**
      This method is called before the pull up controller's view move to a sticky point.
      The default implementation of this method does nothing.
-     - parameter stickyPoint: The targer sticky point, expressed in the pull up controller coordinate system
+     - parameter point: The target point, expressed in the pull up controller coordinate system
      */
-    open func pullUpControllerWillMove(to stickyPoint: CGFloat) { }
+    open func pullUpControllerWillMove(to point: CGFloat) { }
     
     /**
      This method is called after the pull up controller's view move to a sticky point.
      The default implementation of this method does nothing.
-     - parameter stickyPoint: The targer sticky point, expressed in the pull up controller coordinate system
+     - parameter point: The target point, expressed in the pull up controller coordinate system
      */
-    open func pullUpControllerDidMove(to stickyPoint: CGFloat) { }
+    open func pullUpControllerDidMove(to point: CGFloat) { }
     
     /**
      This method is called after the pull up controller's view is dragged to a point.
      The default implementation of this method does nothing.
-     - parameter stickyPoint: The targer point, expressed in the pull up controller coordinate system
+     - parameter stickyPoint: The target point, expressed in the pull up controller coordinate system
      */
     open func pullUpControllerDidDrag(to point: CGFloat) { }
     
