@@ -10,6 +10,21 @@ import UIKit
 
 open class PullUpController: UIViewController {
     
+    public enum Action {
+        /**
+         The action used when the pull up controller's view is added to its parent view
+         */
+        case add
+        /**
+         The action used when the pull up controller's view is removed to its parent view
+         */
+        case remove
+        /**
+         The action used when the pull up controller's view position change
+         */
+        case move
+    }
+    
     // MARK: - Open properties
     
     /**
@@ -132,6 +147,7 @@ open class PullUpController: UIViewController {
         topConstraint?.constant = parentViewHeight - visiblePoint
         willMoveToStickyPoint?(visiblePoint)
         pullUpControllerAnimate(
+            action: .move,
             withDuration: animated ? 0.3 : 0,
             animations: { [weak self] in
                 self?.parent?.view?.layoutIfNeeded()
@@ -155,6 +171,7 @@ open class PullUpController: UIViewController {
                            customTopOffset: parentView.frame.size.height - (pullUpControllerAllStickyPoints.first ?? 0))
         
         pullUpControllerAnimate(
+            action: .move,
             withDuration: animated ? 0.3 : 0,
             animations: { [weak self] in
                 self?.view.layoutIfNeeded()
@@ -166,11 +183,13 @@ open class PullUpController: UIViewController {
      This method will be called when an animation needs to be performed.
      You can consider override this method and customize the animation using the method
      `UIView.animate(withDuration:, delay:, usingSpringWithDamping:, initialSpringVelocity:, options:, animations:, completion:)`
+     - parameter action: The action that is about to be performed, see `PullUpController.Action` for more info
      - parameter duration: The total duration of the animations, measured in seconds. If you specify a negative value or 0, the changes are made without animating them.
      - parameter animations: A block object containing the changes to commit to the views.
      - parameter completion: A block object to be executed when the animation sequence ends.
     */
-    open func pullUpControllerAnimate(withDuration duration: TimeInterval,
+    open func pullUpControllerAnimate(action: Action,
+                                      withDuration duration: TimeInterval,
                                       animations: @escaping () -> Void,
                                       completion: ((Bool) -> Void)?) {
         UIView.animate(withDuration: duration, animations: animations, completion: completion)
@@ -383,6 +402,7 @@ open class PullUpController: UIViewController {
             willMoveToStickyPoint?(targetPoint)
         }
         pullUpControllerAnimate(
+            action: .move,
             withDuration: animationDuration ?? 0,
             animations: { [weak self] in
                 self?.parent?.view.layoutIfNeeded()
@@ -421,6 +441,13 @@ open class PullUpController: UIViewController {
         bottomConstraint?.constant = parentViewHeight - landscapeFrame.height - landscapeFrame.origin.y
     }
     
+    fileprivate func hide() {
+        guard
+            let parentViewHeight = parent?.view.frame.height
+            else { return }
+        topConstraint?.constant = parentViewHeight
+    }
+    
 }
 
 extension UIViewController {
@@ -438,6 +465,7 @@ extension UIViewController {
         addChild(pullUpController)
         pullUpController.setup(superview: view, initialStickyPointOffset: initialStickyPointOffset)
         pullUpController.pullUpControllerAnimate(
+            action: .add,
             withDuration: animated ? 0.3 : 0,
             animations: { [weak self] in
                 self?.view.layoutIfNeeded()
@@ -451,11 +479,18 @@ extension UIViewController {
      - parameter animated: Pass true to animate the removing; otherwise, pass false.
      */
     open func removePullUpController(_ pullUpController: PullUpController, animated: Bool) {
-        pullUpController.pullUpControllerMoveToVisiblePoint(0, animated: animated) {
-            pullUpController.willMove(toParent: nil)
-            pullUpController.view.removeFromSuperview()
-            pullUpController.removeFromParent()
-        }
+        pullUpController.hide()
+        pullUpController.pullUpControllerAnimate(
+            action: .remove,
+            withDuration: animated ? 0.3 : 0,
+            animations: { [weak self] in
+                self?.view.layoutIfNeeded()
+            },
+            completion: { _ in
+                pullUpController.willMove(toParent: nil)
+                pullUpController.view.removeFromSuperview()
+                pullUpController.removeFromParent()
+            })
     }
     
 }
