@@ -122,14 +122,14 @@ open class PullUpController: UIViewController {
     // MARK: - Open methods
     
     /**
-     This method is called before the pull up controller's view move to a sticky point.
+     This method is called before the pull up controller's view move to a point.
      The default implementation of this method does nothing.
      - parameter point: The target point, expressed in the pull up controller coordinate system
      */
     open func pullUpControllerWillMove(to point: CGFloat) { }
     
     /**
-     This method is called after the pull up controller's view move to a sticky point.
+     This method is called after the pull up controller's view move to a point.
      The default implementation of this method does nothing.
      - parameter point: The target point, expressed in the pull up controller coordinate system
      */

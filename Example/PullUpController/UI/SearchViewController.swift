@@ -66,15 +66,15 @@ class SearchViewController: PullUpController {
     }
     
     override func pullUpControllerWillMove(to stickyPoint: CGFloat) {
-        print("will move to \(stickyPoint)")
+//        print("will move to \(stickyPoint)")
     }
     
     override func pullUpControllerDidMove(to stickyPoint: CGFloat) {
-        print("did move to \(stickyPoint)")
+//        print("did move to \(stickyPoint)")
     }
     
     override func pullUpControllerDidDrag(to point: CGFloat) {
-        print("did drag to \(point)")
+//        print("did drag to \(point)")
     }
     
     private func setupDataSource() {
