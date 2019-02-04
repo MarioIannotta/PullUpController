@@ -458,6 +458,11 @@ open class PullUpController: UIViewController {
         topConstraint?.constant = parentViewHeight
     }
     
+    fileprivate func close(_bottomPadding:CGFloat) {
+        let parentViewHeight = _bottomPadding
+        topConstraint?.constant = parentViewHeight
+    }
+    
 }
 
 extension UIViewController {
@@ -501,6 +506,24 @@ extension UIViewController {
                 pullUpController.view.removeFromSuperview()
                 pullUpController.removeFromParent()
             })
+    }
+    
+    /**
+     Adds the specified pull up view controller as a child of the current view controller.
+     - parameter closePullUpController: the pull up controller to move to the bototm position with the padding
+     - parameter animated: Pass true to animate the removing; otherwise, pass false.
+     */
+    
+    open func closePullUpController(_ pullUpController: PullUpController,bottomPadding: CGFloat, animated: Bool) {
+        
+        pullUpController.close(_bottomPadding: bottomPadding)
+        pullUpController.pullUpControllerAnimate(
+            action: .remove,
+            withDuration: animated ? 0.3 : 0,
+            animations: { [weak self] in
+                self?.view.layoutIfNeeded()
+            },
+            completion:nil)
     }
     
 }
