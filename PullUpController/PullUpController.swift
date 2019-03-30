@@ -83,7 +83,7 @@ open class PullUpController: UIViewController {
         return 700
     }
 
-    open var disableMovementWhenInternalScrollViewCanMove: Bool = false
+    open var shouldNotDragViewWhileInternalScrollViewHasRoomToScroll: Bool = false
     
     // MARK: - Public properties
     
@@ -329,8 +329,6 @@ open class PullUpController: UIViewController {
             scrollView.bounces = false
             scrollView.setContentOffset(.zero, animated: false)
         }
-
-        print("pullupviewcontroller:", gestureRecognizer.state)
         
         switch gestureRecognizer.state {
         case .began:
@@ -345,17 +343,13 @@ open class PullUpController: UIViewController {
             
         case .ended:
             scrollView.bounces = true
-            if disableMovementWhenInternalScrollViewCanMove {
-                if initialInternalScrollViewContentOffset.y > 0, initialInternalScrollViewContentOffset.y < scrollView.contentSize.height {
-                    goToNearestStickyPoint(verticalVelocity: 0)
-                    break
-                }
+            if shouldNotDragViewWhileInternalScrollViewHasRoomToScroll {
+                guard
+                    shouldDragView
+                    else { break }
             }
 
             goToNearestStickyPoint(verticalVelocity: gestureRecognizer.velocity(in: view).y)
-
-        case .failed, .cancelled:
-            goToNearestStickyPoint(verticalVelocity: 0)
 
         default:
             break
