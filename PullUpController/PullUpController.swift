@@ -351,7 +351,10 @@ open class PullUpController: UIViewController {
             }
 
             goToNearestStickyPoint(verticalVelocity: gestureRecognizer.velocity(in: view).y)
-            
+
+        case .failed, .cancelled:
+            goToNearestStickyPoint(verticalVelocity: 0)
+
         default:
             break
         }
