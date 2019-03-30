@@ -329,6 +329,8 @@ open class PullUpController: UIViewController {
             scrollView.bounces = false
             scrollView.setContentOffset(.zero, animated: false)
         }
+
+        print("pullupviewcontroller:", gestureRecognizer.state)
         
         switch gestureRecognizer.state {
         case .began:
@@ -344,7 +346,7 @@ open class PullUpController: UIViewController {
         case .ended:
             scrollView.bounces = true
             if disableMovementWhenInternalScrollViewCanMove {
-                if scrollView.contentOffset.y > 0, scrollView.contentOffset.y < scrollView.contentSize.height {
+                if initialInternalScrollViewContentOffset.y > 0, initialInternalScrollViewContentOffset.y < scrollView.contentSize.height {
                     goToNearestStickyPoint(verticalVelocity: 0)
                     break
                 }
