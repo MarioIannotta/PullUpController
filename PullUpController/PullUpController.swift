@@ -381,6 +381,7 @@ open class PullUpController: UIViewController {
     }
     
     private func goToNearestStickyPoint(verticalVelocity: CGFloat) {
+        print("nearestStickyPoint", isPortrait, topConstraint?.constant ?? -100.0)
         guard
             isPortrait,
             let topConstraint = topConstraint
