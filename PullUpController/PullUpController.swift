@@ -342,11 +342,13 @@ open class PullUpController: UIViewController {
             gestureRecognizer.setTranslation(initialInternalScrollViewContentOffset, in: scrollView)
             
         case .ended:
+            print("I am here")
             scrollView.bounces = true
             if shouldNotDragViewWhileInternalScrollViewHasRoomToScroll {
-                guard
-                    shouldDragView
-                    else { goToNearestStickyPoint(verticalVelocity: 0); break; }
+                if !shouldDragView {
+                    goToNearestStickyPoint(verticalVelocity: 0)
+                    break
+                }
             }
 
             goToNearestStickyPoint(verticalVelocity: gestureRecognizer.velocity(in: view).y)
