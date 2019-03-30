@@ -346,7 +346,7 @@ open class PullUpController: UIViewController {
             if shouldNotDragViewWhileInternalScrollViewHasRoomToScroll {
                 guard
                     shouldDragView
-                    else { goToNearestStickyPoint(verticalVelocity: 0) }
+                    else { goToNearestStickyPoint(verticalVelocity: 0); break; }
             }
 
             goToNearestStickyPoint(verticalVelocity: gestureRecognizer.velocity(in: view).y)
