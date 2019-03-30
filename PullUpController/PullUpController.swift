@@ -356,8 +356,6 @@ open class PullUpController: UIViewController {
         default:
             break
         }
-
-        print("pullupcontroller: gestureRecognizerState", gestureRecognizer.state)
         
     }
     
@@ -388,7 +386,6 @@ open class PullUpController: UIViewController {
             let topConstraint = topConstraint
             else { return }
         let targetTopOffset = nearestStickyPointY(yVelocity: verticalVelocity)  // v = px/s
-        print("pullupcontroller: nearestStickyPointY", targetTopOffset)
         let distanceToConver = topConstraint.constant - targetTopOffset // px
         let animationDuration = max(0.08, min(0.3, TimeInterval(abs(distanceToConver/verticalVelocity)))) // s = px/v
         setTopOffset(targetTopOffset, animationDuration: animationDuration)
@@ -397,7 +394,6 @@ open class PullUpController: UIViewController {
     private func setTopOffset(_ value: CGFloat,
                               animationDuration: TimeInterval? = nil,
                               allowBounce: Bool = false) {
-        print("pullupcontroller: topOffset", value)
         guard
             let parentViewHeight = parent?.view.frame.height
             else { return }
