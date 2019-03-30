@@ -354,6 +354,8 @@ open class PullUpController: UIViewController {
         default:
             break
         }
+
+        print("pullupcontroller", gestureRecognizer.state)
         
     }
     
@@ -392,6 +394,7 @@ open class PullUpController: UIViewController {
     private func setTopOffset(_ value: CGFloat,
                               animationDuration: TimeInterval? = nil,
                               allowBounce: Bool = false) {
+        print("topOffset", value)
         guard
             let parentViewHeight = parent?.view.frame.height
             else { return }
@@ -521,7 +524,6 @@ extension UIScrollView {
      */
     open func attach(to pullUpController: PullUpController) {
         pullUpController.internalScrollView = self
-        self.panGestureRecognizer.delegate = self
     }
     
     /**
@@ -532,10 +534,4 @@ extension UIScrollView {
         pullUpController.internalScrollView = nil
     }
 
-}
-
-extension UIScrollView: UIGestureRecognizerDelegate {
-    open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return contentOffset.y <= 0
-    }
 }
