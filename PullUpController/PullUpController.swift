@@ -345,7 +345,7 @@ open class PullUpController: UIViewController {
             scrollView.bounces = true
             if disableMovementWhenInternalScrollViewCanMove {
                 if scrollView.contentOffset.y > 0, scrollView.contentOffset.y < scrollView.contentSize.height {
-                    return
+                    goToNearestStickyPoint(verticalVelocity: 0)
                 }
             }
 
