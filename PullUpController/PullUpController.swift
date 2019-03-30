@@ -521,6 +521,7 @@ extension UIScrollView {
      */
     open func attach(to pullUpController: PullUpController) {
         pullUpController.internalScrollView = self
+        self.panGestureRecognizer.delegate = self
     }
     
     /**
@@ -531,4 +532,10 @@ extension UIScrollView {
         pullUpController.internalScrollView = nil
     }
 
+}
+
+extension UIScrollView: UIGestureRecognizerDelegate {
+    open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return contentOffset.y <= 0
+    }
 }
