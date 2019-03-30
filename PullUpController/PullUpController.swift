@@ -346,7 +346,7 @@ open class PullUpController: UIViewController {
             if shouldNotDragViewWhileInternalScrollViewHasRoomToScroll {
                 guard
                     shouldDragView
-                    else { break }
+                    else { goToNearestStickyPoint(verticalVelocity: 0) }
             }
 
             goToNearestStickyPoint(verticalVelocity: gestureRecognizer.velocity(in: view).y)
@@ -386,6 +386,7 @@ open class PullUpController: UIViewController {
             let topConstraint = topConstraint
             else { return }
         let targetTopOffset = nearestStickyPointY(yVelocity: verticalVelocity)  // v = px/s
+        print("nearestStickyPointY", targetTopOffset)
         let distanceToConver = topConstraint.constant - targetTopOffset // px
         let animationDuration = max(0.08, min(0.3, TimeInterval(abs(distanceToConver/verticalVelocity)))) // s = px/v
         setTopOffset(targetTopOffset, animationDuration: animationDuration)
