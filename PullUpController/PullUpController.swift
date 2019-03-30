@@ -82,6 +82,8 @@ open class PullUpController: UIViewController {
     open var pullUpControllerSkipPointVerticalVelocityThreshold: CGFloat {
         return 700
     }
+
+    open var disableMovementWhenInternalScrollViewCanMove: Bool = false
     
     // MARK: - Public properties
     
@@ -341,6 +343,12 @@ open class PullUpController: UIViewController {
             
         case .ended:
             scrollView.bounces = true
+            if disableMovementWhenInternalScrollViewCanMove {
+                if scrollView.contentOffset.y > 0, scrollView.contentOffset.y < scrollView.contentSize.height {
+                    return
+                }
+            }
+
             goToNearestStickyPoint(verticalVelocity: gestureRecognizer.velocity(in: view).y)
             
         default:
