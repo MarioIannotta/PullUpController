@@ -251,6 +251,7 @@ open class PullUpController: UIViewController {
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGestureRecognizer(_:)))
         panGestureRecognizer?.minimumNumberOfTouches = 1
         panGestureRecognizer?.maximumNumberOfTouches = 1
+        panGestureRecognizer?.delegate = self
         if let panGestureRecognizer = panGestureRecognizer {
             view.addGestureRecognizer(panGestureRecognizer)
         }
@@ -518,6 +519,15 @@ extension UIViewController {
             })
     }
     
+}
+
+extension PullUpController: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let _ = otherGestureRecognizer as? UIPanGestureRecognizer {
+            return true
+        }
+        return false
+    }
 }
 
 extension UIScrollView {
