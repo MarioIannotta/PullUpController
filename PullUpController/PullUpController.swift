@@ -249,6 +249,7 @@ open class PullUpController: UIViewController {
     private func setupPanGestureRecognizer() {
         internalScrollView?.panGestureRecognizer.addTarget(self, action: #selector(handleScrollViewGestureRecognizer(_:)))
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGestureRecognizer(_:)))
+        panGestureRecognizer?.delegate = self
         panGestureRecognizer?.minimumNumberOfTouches = 1
         panGestureRecognizer?.maximumNumberOfTouches = 1
         if let panGestureRecognizer = panGestureRecognizer {
@@ -342,7 +343,6 @@ open class PullUpController: UIViewController {
             gestureRecognizer.setTranslation(initialInternalScrollViewContentOffset, in: scrollView)
             
         case .ended:
-            print("I am here")
             scrollView.bounces = true
             if shouldNotDragViewWhileInternalScrollViewHasRoomToScroll {
                 if !shouldDragView {
@@ -357,7 +357,7 @@ open class PullUpController: UIViewController {
             break
         }
 
-        print("pullupcontroller", gestureRecognizer.state)
+        print("pullupcontroller: gestureRecognizerState", gestureRecognizer.state)
         
     }
     
@@ -383,13 +383,12 @@ open class PullUpController: UIViewController {
     }
     
     private func goToNearestStickyPoint(verticalVelocity: CGFloat) {
-        print("nearestStickyPoint", isPortrait, topConstraint?.constant ?? -100.0)
         guard
             isPortrait,
             let topConstraint = topConstraint
             else { return }
         let targetTopOffset = nearestStickyPointY(yVelocity: verticalVelocity)  // v = px/s
-        print("nearestStickyPointY", targetTopOffset)
+        print("pullupcontroller: nearestStickyPointY", targetTopOffset)
         let distanceToConver = topConstraint.constant - targetTopOffset // px
         let animationDuration = max(0.08, min(0.3, TimeInterval(abs(distanceToConver/verticalVelocity)))) // s = px/v
         setTopOffset(targetTopOffset, animationDuration: animationDuration)
@@ -398,7 +397,7 @@ open class PullUpController: UIViewController {
     private func setTopOffset(_ value: CGFloat,
                               animationDuration: TimeInterval? = nil,
                               allowBounce: Bool = false) {
-        print("topOffset", value)
+        print("pullupcontroller: topOffset", value)
         guard
             let parentViewHeight = parent?.view.frame.height
             else { return }
@@ -518,6 +517,15 @@ extension UIViewController {
             })
     }
     
+}
+
+extension PullUpController: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let _ = otherGestureRecognizer as? UIPanGestureRecognizer {
+            return true
+        }
+        return false
+    }
 }
 
 extension UIScrollView {
