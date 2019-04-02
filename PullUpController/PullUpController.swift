@@ -516,6 +516,7 @@ extension UIScrollView {
      - parameter pullUpController: the pull up controller to move with the current scroll view content.
      */
     open func attach(to pullUpController: PullUpController) {
+        pullUpController.internalScrollView?.detach(from: pullUpController)
         pullUpController.internalScrollView = self
         pullUpController.setupPanGenstureRecognizerForInternalScrollView()
     }
