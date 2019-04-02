@@ -244,8 +244,12 @@ open class PullUpController: UIViewController {
                            customTopOffset: superview.frame.height - initialStickyPointOffset)
     }
     
-    private func setupPanGestureRecognizer() {
+    fileprivate func setupPanGenstureRecognizerForInternalScrollView() {
         internalScrollView?.panGestureRecognizer.addTarget(self, action: #selector(handleScrollViewGestureRecognizer(_:)))
+    }
+    
+    private func setupPanGestureRecognizer() {
+        setupPanGenstureRecognizerForInternalScrollView()
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGestureRecognizer(_:)))
         panGestureRecognizer?.minimumNumberOfTouches = 1
         panGestureRecognizer?.maximumNumberOfTouches = 1
@@ -513,6 +517,7 @@ extension UIScrollView {
      */
     open func attach(to pullUpController: PullUpController) {
         pullUpController.internalScrollView = self
+        pullUpController.setupPanGenstureRecognizerForInternalScrollView()
     }
     
     /**
