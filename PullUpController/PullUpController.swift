@@ -116,7 +116,7 @@ open class PullUpController: UIViewController {
         let stickyPointTreshold = (self.parent?.view.frame.height ?? 0) - (topConstraint?.constant ?? 0)
         let stickyPointsLessCurrentPosition = pullUpControllerAllStickyPoints.map { abs($0 - stickyPointTreshold) }
         guard let minStickyPointDifference = stickyPointsLessCurrentPosition.min() else { return 0 }
-        return stickyPointsLessCurrentPosition.index(of: minStickyPointDifference) ?? 0
+        return stickyPointsLessCurrentPosition.firstIndex(of: minStickyPointDifference) ?? 0
     }
     
     // MARK: - Open methods
