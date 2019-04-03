@@ -244,16 +244,16 @@ open class PullUpController: UIViewController {
                            customTopOffset: superview.frame.height - initialStickyPointOffset)
     }
     
-    fileprivate func setupPanGenstureRecognizerOfInternalScrollView() {
+    fileprivate func addInternalScrollViewPanGesture() {
         internalScrollView?.panGestureRecognizer.addTarget(self, action: #selector(handleScrollViewGestureRecognizer(_:)))
     }
     
-    fileprivate func removePanGestureRecognizerOfInternalScrollView() {
+    fileprivate func removeInternalScrollViewPanGestureRecognizer() {
         internalScrollView?.panGestureRecognizer.removeTarget(self, action: #selector(handleScrollViewGestureRecognizer(_:)))
     }
     
     private func setupPanGestureRecognizer() {
-        setupPanGenstureRecognizerOfInternalScrollView()
+        addInternalScrollViewPanGesture()
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGestureRecognizer(_:)))
         panGestureRecognizer?.minimumNumberOfTouches = 1
         panGestureRecognizer?.maximumNumberOfTouches = 1
@@ -522,7 +522,7 @@ extension UIScrollView {
     open func attach(to pullUpController: PullUpController) {
         pullUpController.internalScrollView?.detach(from: pullUpController)
         pullUpController.internalScrollView = self
-        pullUpController.setupPanGenstureRecognizerOfInternalScrollView()
+        pullUpController.addInternalScrollViewPanGesture()
     }
     
     /**
@@ -530,7 +530,7 @@ extension UIScrollView {
      - parameter pullUpController: the pull up controller to be removed from controlling the scroll view.
      */
     open func detach(from pullUpController: PullUpController) {
-        pullUpController.removePanGestureRecognizerOfInternalScrollView()
+        pullUpController.removeInternalScrollViewPanGestureRecognizer()
         pullUpController.internalScrollView = nil
     }
 
