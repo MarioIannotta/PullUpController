@@ -257,6 +257,7 @@ open class PullUpController: UIViewController {
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGestureRecognizer(_:)))
         panGestureRecognizer?.minimumNumberOfTouches = 1
         panGestureRecognizer?.maximumNumberOfTouches = 1
+        panGestureRecognizer?.delegate = self
         if let panGestureRecognizer = panGestureRecognizer {
             view.addGestureRecognizer(panGestureRecognizer)
         }
@@ -362,6 +363,10 @@ open class PullUpController: UIViewController {
             isPortrait,
             let topConstraint = topConstraint
             else { return }
+        
+        let xVelocity = gestureRecognizer.velocity(in: self.view).x
+		let xTranslation = gestureRecognizer.translation(in: view).x
+		if abs(xVelocity) > 0 || abs(xTranslation) > 0 { return }
         
         let yTranslation = gestureRecognizer.translation(in: view).y
         
@@ -511,6 +516,19 @@ extension UIViewController {
             })
     }
     
+}
+
+extension PullUpController: UIGestureRecognizerDelegate {
+
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+
+		guard let _ = otherGestureRecognizer as? UIPanGestureRecognizer, let current = gestureRecognizer as? UIPanGestureRecognizer else {
+			return false
+		}
+
+		let velocity = current.velocity(in: self.view)
+		return abs(velocity.x) >= abs(velocity.y);
+	}
 }
 
 extension UIScrollView {
