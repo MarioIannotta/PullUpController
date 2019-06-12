@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="doG-7b-3D6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="doG-7b-3D6">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,10 +22,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iMQ-X7-eJt">
-                                <rect key="frame" x="20" y="84" width="250" height="137"/>
+                                <rect key="frame" x="20" y="84" width="250" height="264"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dfq-ok-AvZ">
-                                        <rect key="frame" x="15" y="10" width="220" height="117"/>
+                                        <rect key="frame" x="15" y="10" width="220" height="244"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IPI-H1-hVv">
                                                 <rect key="frame" x="0.0" y="0.0" width="220" height="53.5"/>
@@ -60,6 +60,34 @@
                                                             <segment title="Expanded"/>
                                                         </segments>
                                                     </segmentedControl>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="bC5-pY-cOk">
+                                                <rect key="frame" x="0.0" y="127" width="220" height="53.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Animate Show" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9M-Xa-0zK">
+                                                        <rect key="frame" x="0.0" y="16.5" width="171" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="geH-Oa-eM4">
+                                                        <rect key="frame" x="171" y="11.5" width="51" height="31"/>
+                                                    </switch>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="dZa-i4-BY8">
+                                                <rect key="frame" x="0.0" y="190.5" width="220" height="53.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Animate Hide" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edd-Am-66x">
+                                                        <rect key="frame" x="0.0" y="16.5" width="171" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BZg-jf-DZo">
+                                                        <rect key="frame" x="171" y="11.5" width="51" height="31"/>
+                                                    </switch>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -114,6 +142,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="animateHideSwitch" destination="BZg-jf-DZo" id="RnF-ZE-2lQ"/>
+                        <outlet property="animateShowSwitch" destination="geH-Oa-eM4" id="8J4-pR-Uki"/>
                         <outlet property="initialStateSegmentedControl" destination="iWm-ZS-z7f" id="hG6-Cf-Ter"/>
                         <outlet property="mapView" destination="drN-fA-22T" id="EE5-qd-AEu"/>
                         <outlet property="sizeSliderView" destination="iMQ-X7-eJt" id="5B3-VC-LYw"/>
