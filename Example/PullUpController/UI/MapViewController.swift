@@ -19,8 +19,10 @@ class MapViewController: UIViewController {
     }
     @IBOutlet private weak var widthSlider: UISlider!
     @IBOutlet private weak var initialStateSegmentedControl: UISegmentedControl!
-    
+
     private var originalPullUpControllerViewSize: CGSize = .zero
+    @IBOutlet weak var animateShowSwitch: UISwitch!
+    @IBOutlet weak var animateHideSwitch: UISwitch!
     
     private func makeSearchViewControllerIfNeeded() -> SearchViewController {
         let currentPullUpController = children
@@ -35,41 +37,42 @@ class MapViewController: UIViewController {
         if originalPullUpControllerViewSize == .zero {
             originalPullUpControllerViewSize = pullUpController.view.bounds.size
         }
+
         return pullUpController
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        addPullUpController()
+        addPullUpController(animated: animateShowSwitch.isOn)
     }
-    
-    private func addPullUpController() {
+
+    private func addPullUpController(animated: Bool) {
         let pullUpController = makeSearchViewControllerIfNeeded()
         _ = pullUpController.view // call pullUpController.viewDidLoad()
         addPullUpController(pullUpController,
                             initialStickyPointOffset: pullUpController.initialPointOffset,
-                            animated: true)
+                            animated: animated)
     }
-    
+
     func zoom(to location: CLLocationCoordinate2D) {
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         let region = MKCoordinateRegion(center: location, span: span)
-        
+
         mapView.setRegion(region, animated: true)
     }
-    
+
     @IBAction private func addButtonTapped() {
         guard
             children.filter({ $0 is SearchViewController }).count == 0
             else { return }
-        addPullUpController()
+        addPullUpController(animated: animateShowSwitch.isOn)
     }
-    
+
     @IBAction private func removeButtonTapped() {
         let pullUpController = makeSearchViewControllerIfNeeded()
-        removePullUpController(pullUpController, animated: true)
+        removePullUpController(pullUpController, animated: animateHideSwitch.isOn)
     }
-    
+
     @IBAction private func widthSliderValueChanged(_ sender: UISlider) {
         let pullUpController = makeSearchViewControllerIfNeeded()
         let width = originalPullUpControllerViewSize.width * CGFloat(sender.value)
@@ -80,6 +83,6 @@ class MapViewController: UIViewController {
                                                               height: pullUpController.landscapeFrame.height))
         pullUpController.updatePreferredFrameIfNeeded(animated: true)
     }
-    
+
 }
 
