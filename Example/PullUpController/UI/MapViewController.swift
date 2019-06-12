@@ -40,10 +40,10 @@ class MapViewController: UIViewController {
 
         return pullUpController
     }
-    var animated = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        addPullUpController(animated: animated)
+        addPullUpController(animated: animateShowSwitch.isOn)
     }
 
     private func addPullUpController(animated: Bool) {
