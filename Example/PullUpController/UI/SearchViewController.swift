@@ -12,6 +12,13 @@ import PullUpController
 
 class SearchViewController: PullUpController {
     
+    enum InitialState {
+        case contracted
+        case expanded
+    }
+    
+    var initialState: InitialState = .contracted
+    
     // MARK: - IBOutlets
     
     @IBOutlet private weak var visualEffectView: UIVisualEffectView!
@@ -24,6 +31,15 @@ class SearchViewController: PullUpController {
     @IBOutlet private weak var firstPreviewView: UIView!
     @IBOutlet private weak var secondPreviewView: UIView!
     @IBOutlet private weak var tableView: UITableView!
+    
+    var initialPointOffset: CGFloat {
+        switch initialState {
+        case .contracted:
+            return searchBoxContainerView?.frame.height ?? 0
+        case .expanded:
+            return pullUpControllerPreferredSize.height
+        }
+    }
 
     private var locations = [(title: String, location: CLLocationCoordinate2D)]()
     
@@ -41,24 +57,24 @@ class SearchViewController: PullUpController {
         
         tableView.attach(to: self)
         setupDataSource()
-        
-        willMoveToStickyPoint = { point in
-            print("willMoveToStickyPoint \(point)")
-        }
-
-        didMoveToStickyPoint = { point in
-            print("didMoveToStickyPoint \(point)")
-        }
-        
-        onDrag = { point in
-            print("onDrag: \(point)")
-        }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         view.layer.cornerRadius = 12
+    }
+    
+    override func pullUpControllerWillMove(to stickyPoint: CGFloat) {
+//        print("will move to \(stickyPoint)")
+    }
+    
+    override func pullUpControllerDidMove(to stickyPoint: CGFloat) {
+//        print("did move to \(stickyPoint)")
+    }
+    
+    override func pullUpControllerDidDrag(to point: CGFloat) {
+//        print("did drag to \(point)")
     }
     
     private func setupDataSource() {
@@ -92,16 +108,37 @@ class SearchViewController: PullUpController {
         return landscapeFrame
     }
     
-    override var pullUpControllerPreviewOffset: CGFloat {
-        return searchBoxContainerView.frame.height
-    }
-    
     override var pullUpControllerMiddleStickyPoints: [CGFloat] {
-        return [firstPreviewView.frame.maxY]
+        switch initialState {
+        case .contracted:
+            return [firstPreviewView.frame.maxY]
+        case .expanded:
+            return [searchBoxContainerView.frame.maxY, firstPreviewView.frame.maxY]
+        }
     }
     
-    override var pullUpControllerIsBouncingEnabled: Bool {
-        return false
+    override var pullUpControllerBounceOffset: CGFloat {
+        return 20
+    }
+    
+    override func pullUpControllerAnimate(action: PullUpController.Action,
+                                          withDuration duration: TimeInterval,
+                                          animations: @escaping () -> Void,
+                                          completion: ((Bool) -> Void)?) {
+        switch action {
+        case .move:
+            UIView.animate(withDuration: 0.3,
+                           delay: 0,
+                           usingSpringWithDamping: 0.7,
+                           initialSpringVelocity: 0,
+                           options: .curveEaseInOut,
+                           animations: animations,
+                           completion: completion)
+        default:
+            UIView.animate(withDuration: 0.3,
+                           animations: animations,
+                           completion: completion)
+        }
     }
     
 }
