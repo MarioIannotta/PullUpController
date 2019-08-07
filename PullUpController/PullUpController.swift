@@ -111,7 +111,7 @@ open class PullUpController: UIViewController {
     fileprivate weak var internalScrollView: UIScrollView?
     
     private var initialInternalScrollViewContentOffset: CGPoint = .zero
-    private var initialStickyPointOffset: CGFloat?
+    open var initialStickyPointOffset: CGFloat?
     private var currentStickyPointIndex: Int {
         let stickyPointTreshold = (self.parent?.view.frame.height ?? 0) - (topConstraint?.constant ?? 0)
         let stickyPointsLessCurrentPosition = pullUpControllerAllStickyPoints.map { abs($0 - stickyPointTreshold) }
