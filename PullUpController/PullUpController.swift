@@ -478,7 +478,8 @@ extension UIViewController {
      */
     open func addPullUpController(_ pullUpController: PullUpController,
                                   initialStickyPointOffset: CGFloat,
-                                  animated: Bool) {
+                                  animated: Bool,
+                                  completion: ((Bool) -> Void)? = nil) {
         assert(!(self is UITableViewController), "It's not possible to attach a PullUpController to a UITableViewController. Check this issue for more information: https://github.com/MarioIannotta/PullUpController/issues/14")
         addChild(pullUpController)
         pullUpController.setup(superview: view, initialStickyPointOffset: initialStickyPointOffset)
@@ -489,7 +490,7 @@ extension UIViewController {
                 animations: { [weak self] in
                     self?.view.layoutIfNeeded()
                 },
-                completion: nil)
+                completion: completion)
         } else {
             view.layoutIfNeeded()
         }
@@ -500,7 +501,9 @@ extension UIViewController {
      - parameter pullUpController: the pull up controller to remove as a child from the current view controller.
      - parameter animated: Pass true to animate the removing; otherwise, pass false.
      */
-    open func removePullUpController(_ pullUpController: PullUpController, animated: Bool) {
+    open func removePullUpController(_ pullUpController: PullUpController, 
+                                     animated: Bool, 
+                                     completion: ((Bool) -> Void)? = nil) {
         pullUpController.hide()
         if animated {
             pullUpController.pullUpControllerAnimate(
@@ -509,16 +512,18 @@ extension UIViewController {
                 animations: { [weak self] in
                     self?.view.layoutIfNeeded()
                 },
-                completion: { _ in
+                completion: { didComplete in
                     pullUpController.willMove(toParent: nil)
                     pullUpController.view.removeFromSuperview()
                     pullUpController.removeFromParent()
+                    completion?(didComplete)
             })
         } else {
             view.layoutIfNeeded()
             pullUpController.willMove(toParent: nil)
             pullUpController.view.removeFromSuperview()
             pullUpController.removeFromParent()
+            completion?(didComplete)
         }
     }
     
