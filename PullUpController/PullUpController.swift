@@ -475,6 +475,7 @@ extension UIViewController {
      - parameter pullUpController: the pull up controller to add as a child of the current view controller.
      - parameter initialStickyPointOffset: The point where the provided `pullUpController`'s view will be initially placed expressed in screen units of the pull up controller coordinate system. If this value is not provided, the `pullUpController`'s view will be initially placed expressed
      - parameter animated: Pass true to animate the adding; otherwise, pass false.
+     - parameter completion: Optional completion handler to be called after the PullUpController is added.
      */
     open func addPullUpController(_ pullUpController: PullUpController,
                                   initialStickyPointOffset: CGFloat,
@@ -500,6 +501,7 @@ extension UIViewController {
      Adds the specified pull up view controller as a child of the current view controller.
      - parameter pullUpController: the pull up controller to remove as a child from the current view controller.
      - parameter animated: Pass true to animate the removing; otherwise, pass false.
+     - parameter completion: Optional completion handler to be called after the PullUpController is removed.
      */
     open func removePullUpController(_ pullUpController: PullUpController, 
                                      animated: Bool, 
