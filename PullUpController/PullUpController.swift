@@ -491,9 +491,14 @@ extension UIViewController {
                 animations: { [weak self] in
                     self?.view.layoutIfNeeded()
                 },
-                completion: completion)
+                completion: { didComplete in
+                    pullUpController.didMove(toParent: self)
+                    completion?(didComplete)
+                }
+            )
         } else {
             view.layoutIfNeeded()
+            pullUpController.didMove(toParent: self)
             completion?(true)
         }
     }
