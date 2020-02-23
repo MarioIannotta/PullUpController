@@ -494,6 +494,7 @@ extension UIViewController {
                 completion: completion)
         } else {
             view.layoutIfNeeded()
+            completion?(true)
         }
     }
     
@@ -525,7 +526,7 @@ extension UIViewController {
             pullUpController.willMove(toParent: nil)
             pullUpController.view.removeFromSuperview()
             pullUpController.removeFromParent()
-            completion?(didComplete)
+            completion?(true)
         }
     }
     
