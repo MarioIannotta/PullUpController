@@ -14,6 +14,7 @@
 		AC44912520DBFFBE00F98838 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC44911E20DBFFBE00F98838 /* SearchResultCell.swift */; };
 		AC44912620DBFFBE00F98838 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC44911F20DBFFBE00F98838 /* Main.storyboard */; };
 		AC44912720DBFFBE00F98838 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC44912020DBFFBE00F98838 /* Assets.xcassets */; };
+		ACA1B1C52403BBB600B6A7B6 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA1B1C42403BBB600B6A7B6 /* UIViewController+.swift */; };
 		E969182522AF18CFABF54185 /* Pods_PullUpController_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA23D4840D57C4607249C0D /* Pods_PullUpController_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		AC44911E20DBFFBE00F98838 /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		AC44911F20DBFFBE00F98838 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		AC44912020DBFFBE00F98838 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ACA1B1C42403BBB600B6A7B6 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		BFA23D4840D57C4607249C0D /* Pods_PullUpController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PullUpController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F59F16287664980C2DF5643A /* Pods-PullUpController_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PullUpController_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PullUpController_Tests/Pods-PullUpController_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		F97967A110801D095B7F4727 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				AC44912020DBFFBE00F98838 /* Assets.xcassets */,
+				ACA1B1C32403BBAD00B6A7B6 /* Extensions */,
 				AC44911820DBFFBE00F98838 /* Supporting files */,
 				AC44911B20DBFFBE00F98838 /* UI */,
 			);
@@ -129,6 +132,14 @@
 				AC44911C20DBFFBE00F98838 /* SearchViewController.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		ACA1B1C32403BBAD00B6A7B6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				ACA1B1C42403BBB600B6A7B6 /* UIViewController+.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,6 +258,7 @@
 			files = (
 				AC44912320DBFFBE00F98838 /* SearchViewController.swift in Sources */,
 				AC44912420DBFFBE00F98838 /* MapViewController.swift in Sources */,
+				ACA1B1C52403BBB600B6A7B6 /* UIViewController+.swift in Sources */,
 				AC44912520DBFFBE00F98838 /* SearchResultCell.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);

@@ -35,7 +35,7 @@ class SearchViewController: PullUpController {
     var initialPointOffset: CGFloat {
         switch initialState {
         case .contracted:
-            return searchBoxContainerView?.frame.height ?? 0
+            return (searchBoxContainerView?.frame.height ?? 0) + safeAreaAdditionalOffset
         case .expanded:
             return pullUpControllerPreferredSize.height
         }
@@ -45,6 +45,10 @@ class SearchViewController: PullUpController {
     
     public var portraitSize: CGSize = .zero
     public var landscapeFrame: CGRect = .zero
+
+    private var safeAreaAdditionalOffset: CGFloat {
+        hasSafeArea ? 20 : 0
+    }
     
     // MARK: - Lifecycle
     
@@ -113,7 +117,7 @@ class SearchViewController: PullUpController {
         case .contracted:
             return [firstPreviewView.frame.maxY]
         case .expanded:
-            return [searchBoxContainerView.frame.maxY, firstPreviewView.frame.maxY]
+            return [searchBoxContainerView.frame.maxY + safeAreaAdditionalOffset, firstPreviewView.frame.maxY]
         }
     }
     
