@@ -3,7 +3,7 @@ Create your own pull up controller with multiple sticky points like in iOS Maps
 
 [![Platform](http://img.shields.io/badge/platform-ios-red.svg?style=flat
 )](https://developer.apple.com/iphone/index.action)
-[![Swift 4](https://img.shields.io/badge/Swift-4-orange.svg?style=flat)](https://developer.apple.com/swift/) 
+[![Swift 5](https://img.shields.io/badge/Swift-5-orange.svg?style=flat)](https://developer.apple.com/swift/) 
 [![Cocoapods Compatible](https://img.shields.io/cocoapods/v/PullUpController.svg)](https://img.shields.io/cocoapods/v/PullUpController.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ab0e3ab724774c9b5974/maintainability)](https://codeclimate.com/github/MarioIannotta/PullUpController/maintainability)
 
