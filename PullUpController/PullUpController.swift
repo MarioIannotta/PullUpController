@@ -150,7 +150,7 @@ open class PullUpController: UIViewController {
      - parameter animated: Pass true to animate the move; otherwise, pass false.
      - parameter completion: The closure to execute after the animation is completed. This block has no return value and takes no parameters. You may specify nil for this parameter.
      */
-    open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, animated: Bool, completion: (() -> Void)?) {
+    open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, animated: Bool, duration: Double = 0.3 ,completion: (() -> Void)?) {
         guard
             isPortrait,
             let parentViewHeight = parent?.view.frame.height
@@ -159,7 +159,7 @@ open class PullUpController: UIViewController {
         pullUpControllerWillMove(to: visiblePoint)
         pullUpControllerAnimate(
             action: .move,
-            withDuration: animated ? 0.3 : 0,
+            withDuration: animated ? duration : 0,
             animations: { [weak self] in
                 self?.parent?.view?.layoutIfNeeded()
             },
